@@ -9,7 +9,11 @@ activeButtonColor		= '#fb8c00'
 # Title
 titleHome 				= "Sistema de Aprendizado por Reforço"
 titleTelaInicial 		= "Interface de Aprendizado por Reforço"
-titleTelaAprendizado	= "Ambiente de Aprendizado"
+titleTela01				= "Ambiente de Aprendizado"
+titleTela02				= "Resultados"
+titleTela03				= "Dados"
+titleTela04				= "Configurações"
+titleTela05				= "Sobre"
 titleCopyright			= "Copyright 2020 : UFRBots"
 
 # Title's Button

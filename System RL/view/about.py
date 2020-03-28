@@ -18,7 +18,7 @@ def view(TelaInicial):
         router.router(id, TelaInicial)
 
     TelaInicial.title(
-    	constants.titleTela01
+    	constants.titleTela05
     )
     TelaInicial.configure(
     	background=constants.backgroundColor

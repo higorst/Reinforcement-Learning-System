@@ -4,9 +4,13 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 
 import constants.constants as constants
-from view import aprendizado
+from view import Router as router
 
-def TelaInicial():
+def TelaInicial(TelaInicial):
+
+    if (TelaInicial == None):
+        TelaInicial = Tk()
+        TelaInicial.geometry(constants.viewSize)
 
     # ------------------------------------------------------
     def Sair():
@@ -15,27 +19,13 @@ def TelaInicial():
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    def rodarAprendizado():
-        # TelaInicial.destroy()
-        aprendizado.viewAprendizado(TelaInicial)
-        pass
+    def nextView(id):        
+        router.router(id, TelaInicial)
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    def getResults():
-        # TelaInicial.destroy()
-        # Consulta.TelaConsulta()
-        pass
-    # ------------------------------------------------------
-
-    # ------------------------------------------------------
-    def about():
-        pass
-    # ------------------------------------------------------
-
-    # ------------------------------------------------------
-    TelaInicial = Tk()
-    TelaInicial.geometry(constants.viewSize)
+    # TelaInicial = Tk()
+    # TelaInicial.geometry(constants.viewSize)
     TelaInicial.title(constants.titleTelaInicial)
     TelaInicial.configure(
         background=constants.backgroundColor
@@ -74,16 +64,16 @@ def TelaInicial():
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btCadastro = Button(
+    bt = Button(
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial01, 
-        command=rodarAprendizado, 
+        command=lambda nextView=nextView: nextView(1), 
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor,
     )
-    btCadastro.place(
+    bt.place(
         x=400, 
         y=300, 
         anchor=CENTER
@@ -91,16 +81,16 @@ def TelaInicial():
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btConsulta = Button(
+    bt = Button(
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial02, 
-        command=getResults, 
+        command=lambda nextView=nextView: nextView(2),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
-    btConsulta.place(
+    bt.place(
         x=400, 
         y=350, 
         anchor=CENTER
@@ -108,15 +98,16 @@ def TelaInicial():
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btEmitirNota = Button(
+    bt = Button(
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial03, 
+        command=lambda nextView=nextView: nextView(3),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
-    btEmitirNota.place(
+    bt.place(
         x=400, 
         y=400, 
         anchor=CENTER
@@ -124,15 +115,16 @@ def TelaInicial():
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btImprimirAdesivo = Button(
+    bt = Button(
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial04, 
+        command=lambda nextView=nextView: nextView(4),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
-    btImprimirAdesivo.place(
+    bt.place(
         x=400, 
         y=450, 
         anchor=CENTER
@@ -140,16 +132,16 @@ def TelaInicial():
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btDuplicata = Button(
+    bt = Button(
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial05, 
-        command=about, 
+        command=lambda nextView=nextView: nextView(5),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
-    btDuplicata.place(
+    bt.place(
         x=400, 
         y=500, 
         anchor=CENTER
@@ -157,7 +149,7 @@ def TelaInicial():
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btSair = Button(
+    bt = Button(
         TelaInicial, 
         width=5, 
         text=constants.btExit, 
@@ -166,7 +158,7 @@ def TelaInicial():
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
-    btSair.place(
+    bt.place(
         x=795, 
         y=595, 
         anchor=SE
@@ -196,5 +188,4 @@ def TelaInicial():
     TelaInicial.mainloop()
 
 if __name__ == '__main__':
-    TelaInicial()
-
+    view = TelaInicial(None)
