@@ -4,13 +4,9 @@ from tkinter import messagebox
 from PIL import ImageTk, Image
 
 import constants.constants as constants
-from view import Router as router
+from view import Router
 
 def TelaInicial(TelaInicial):
-
-    if (TelaInicial == None):
-        TelaInicial = Tk()
-        TelaInicial.geometry(constants.viewSize)
 
     # ------------------------------------------------------
     def Sair():
@@ -19,13 +15,16 @@ def TelaInicial(TelaInicial):
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    def nextView(id):        
-        router.router(id, TelaInicial)
+    def router(id):        
+        Router.router(id, TelaInicial)
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    # TelaInicial = Tk()
-    # TelaInicial.geometry(constants.viewSize)
+    # Definições da view
+    if (TelaInicial == None):
+        TelaInicial = Tk()
+        TelaInicial.geometry(constants.viewSize)
+        TelaInicial.resizable(0,0)
     TelaInicial.title(constants.titleTelaInicial)
     TelaInicial.configure(
         background=constants.backgroundColor
@@ -68,7 +67,7 @@ def TelaInicial(TelaInicial):
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial01, 
-        command=lambda nextView=nextView: nextView(1), 
+        command=lambda router=router: router(1), 
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor,
@@ -85,7 +84,7 @@ def TelaInicial(TelaInicial):
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial02, 
-        command=lambda nextView=nextView: nextView(2),
+        command=lambda router=router: router(2),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
@@ -102,7 +101,7 @@ def TelaInicial(TelaInicial):
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial03, 
-        command=lambda nextView=nextView: nextView(3),
+        command=lambda router=router: router(3),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
@@ -119,7 +118,7 @@ def TelaInicial(TelaInicial):
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial04, 
-        command=lambda nextView=nextView: nextView(4),
+        command=lambda router=router: router(4),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
@@ -136,7 +135,7 @@ def TelaInicial(TelaInicial):
         TelaInicial, 
         width=15, 
         text=constants.btTelaInicial05, 
-        command=lambda nextView=nextView: nextView(5),
+        command=lambda router=router: router(5),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
@@ -184,6 +183,7 @@ def TelaInicial(TelaInicial):
         anchor=SW
     )
     # ------------------------------------------------------
+    # router(1)
 
     TelaInicial.mainloop()
 

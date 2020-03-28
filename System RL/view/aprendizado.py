@@ -17,8 +17,10 @@ def view(TelaInicial):
         id = 0
         router.router(id, TelaInicial)
 
+    # ------------------------------------------------------
+    # Definições da view
     TelaInicial.title(
-    	constants.titleTela01
+    	constants.titleTela02
     )
     TelaInicial.configure(
     	background=constants.backgroundColor
