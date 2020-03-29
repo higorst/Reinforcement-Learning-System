@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from kinter import *
+from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
 from PIL import ImageTk, Image
