@@ -9,12 +9,6 @@ from view import Router
 def TelaInicial(TelaInicial):
 
     # ------------------------------------------------------
-    def Sair():
-        TelaInicial.destroy()
-        TelaInicial.quit()
-    # ------------------------------------------------------
-
-    # ------------------------------------------------------
     def router(id):        
         Router.router(id, TelaInicial)
     # ------------------------------------------------------
@@ -157,7 +151,7 @@ def TelaInicial(TelaInicial):
         TelaInicial, 
         width=5, 
         text=constants.btExit, 
-        command=Sair,
+        command=lambda router=router: router(999),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor

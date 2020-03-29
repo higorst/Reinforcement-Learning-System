@@ -24,27 +24,49 @@ def router(id, TelaInicial):
 	# Rotina para sair do sistema
 	if( id == 999 ):
 		# Apga diretórios __pycache__
-		input_ = "rm -r __pycache__ "+
-		"&& constants/__pycache__ "+
-		"&& img/__pycache__ "+
-		"&& view/__pycache__ "+
-		"&& view/code/__pycache__"
+		input_ = "rm -r __pycache__ && cd constants && rm -r __pycache__ && cd .. && cd view && rm -r __pycache__ && cd .. && cd view/code && rm -r __pycache__ && cd .. && cd .."
 		os.system(input_)
 
 		# Finaliza programa
 		TelaInicial.destroy()
 		TelaInicial.quit()
 
+    # ------------------------------------------------------
     # Rotinas para chamar nova view
+    # ------------------------------------------------------
+
+    # ------------------------------------------------------
+    # Tela Inicial
+    # ------------------------------------------------------
 	elif( id == 0 ):
 		telaInicial.TelaInicial(TelaInicial)
+
+    # ------------------------------------------------------
+	# Tela partida
+    # ------------------------------------------------------
 	elif( id == 1 ):
 		partida.view(TelaInicial)
+
+    # ------------------------------------------------------
+	# Tela AR
+    # ------------------------------------------------------
 	elif( id == 2 ):
 		aprendizado.view(TelaInicial)
+
+    # ------------------------------------------------------
+	# Tela dados
+    # ------------------------------------------------------
 	elif( id == 3 ):
 		dados.view(TelaInicial)
+
+    # ------------------------------------------------------
+	# Tela config
+    # ------------------------------------------------------
 	elif( id == 4 ):
 		config.view(TelaInicial)
+
+    # ------------------------------------------------------
+	# Tela sobre
+    # ------------------------------------------------------
 	elif( id == 5 ):
 		about.view(TelaInicial)
