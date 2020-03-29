@@ -3,13 +3,19 @@ import os
 import subprocess
 
 from time import sleep 
-import os                           
+import os            
+import constants.constants as constants               
 
-def run():
+def run(mode):
 	# ----------------------
 	# (1) - iniciar server
 	# ----------------------
-	input_ = "cd && cd log/ && rcssserver server::auto_mode = true server::nr_extra_halfs = 0 server::penalty_shoot_outs = false  server::synch_mode=true"
+	# modo rápido
+	if (mode == constants.btModoMatchFast):
+		input_ = "cd && cd log/ && rcssserver server::auto_mode = true server::nr_extra_halfs = 0 server::penalty_shoot_outs = false  server::synch_mode=true"
+	# modo normal
+	else:
+		input_ = "cd && cd log/ && rcssserver"
 	os.system(input_)
 
 # --------------------------------------

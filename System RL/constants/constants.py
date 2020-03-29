@@ -10,6 +10,11 @@ backgroundColorInfo		= '#42a5f5'
 butonColor 				= '#fff'
 butonColorInfo 			= '#42a5f5'
 borderColorButtonInfo	= '#64b5f6'
+buttonStartActive		= '#2286c3'
+buttonStopColor			= '#d32f2f'
+buttonStopColorActive	= '#9a0007'
+buttonColorConfig		= '#4caf50'
+buttonColorConfigActive	= '#087f23'
 letterColor 			= '#000'
 activeButtonColor		= '#fb8c00'
 activeButtonColorInfo	= '#0077c2'
@@ -34,7 +39,9 @@ titleAskDirectory		= "Acesse diretório do time"
 # --------------------------------------------------------------
 btTelaInicial 			= "Voltar"
 btInfo					= "Info"
-btInfoBack				= "Voltar"
+btStart					= "Iniciar Partida"
+btStop					= "Interromper Partida"
+btInfoBack				= "Entendi"
 btExit 					= "Sair"
 btTelaInicial01 		= "Nova Partida"
 btTelaInicial02 		= "AR"
@@ -43,6 +50,10 @@ btTelaInicial04 		= "Configurações"
 btTelaInicial05 		= "Sobre"
 btGetTeam01				= "Time AR"
 btGetTeam02				= "Time Reserva"
+btModoMatchFast			= "Jogo Modo Rápido"
+btModoMatchNormal		= "Jogo Modo Normal"
+btModoViewActive		= "Monitor Ativado"
+btModoViewInactive		= "Monitor Desativado"
 
 # --------------------------------------------------------------
 # String
@@ -65,15 +76,17 @@ addressInfo01			= "img/info01.jpeg"
 addressInfo02			= "img/info02.jpeg"
 addressInfo03			= "img/info03.jpeg"
 addressVS				= "img/vs.png"
+addressFootbalField		= "img/footbal.png"
 
 # --------------------------------------------------------------
 # Config
 # --------------------------------------------------------------
 viewSize				= "800x600"
 fontPersonalizada 		= "Ubuntu"
+fontPersonalizadaTeam	= "Purisa"
 fontSizeTitleTelaIn		= 24
 fontSizeTitleTelaInfo	= 11 
-fontSizeTeamName		= 12
+fontSizeTeamName		= 15
 fontSizeCopyright		= 9
 
 # --------------------------------------------------------------
@@ -81,6 +94,6 @@ fontSizeCopyright		= 9
 # --------------------------------------------------------------
 widthLabelTeam 			= 15
 proportionInfoImage		= 1.6
-proportionVSImage		= 10
+proportionVSImage		= 12
 xLenghtLabelTeam		= 250
 yLenghtLabelMessage		= 100

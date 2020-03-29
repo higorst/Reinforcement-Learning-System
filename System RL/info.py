@@ -25,14 +25,6 @@ def view():
     info.configure(
         background=constants.backgroundColorInfo
     )
-    scrollbar = Scrollbar(info)
-    scrollbar.pack(side=RIGHT, fill=Y)
-    # listbox = Listbox(info, yscrollcommand=scrollbar.set)
-    # for i in range(1000):
-    #     listbox.insert(END, str(i))
-    # listbox.pack(side=LEFT, fill=BOTH)
-
-    # scrollbar.config(command=listbox.yview)
     # ------------------------------------------------------
 
     # ------------------------------------------------------
@@ -203,7 +195,7 @@ def view():
     )
     bt.config(highlightbackground=constants.borderColorButtonInfo)
     bt.place(
-        x=780, 
+        x=795, 
         y=595, 
         anchor=SE
     )

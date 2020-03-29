@@ -3,15 +3,15 @@ import os
 import subprocess
 from time import sleep
 
-def run():
+def run(team):
 	sleep(1)
 	# -----------------------------------
 	# percorrer caminho até pasta do time
 	# -----------------------------------
 	print("\n------------------------------")
-	print("Time AR entrando em campo")
+	print(str(team["teamName"]) + " entrando em campo ...")
 	print("------------------------------\n")
-	input_ = 'cd && cd Documents/AR/ && ./start.sh'
+	input_ = 'cd && cd ' + str(team["path"]) + ' && ./start.sh'
 	os.system(input_)
 	# if (os.system(input_) == 0):
 	# 	# ----------------
