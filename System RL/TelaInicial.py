@@ -71,7 +71,8 @@ def TelaInicial(TelaInicial):
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor,
-    )
+    )    
+    bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
         x=400, 
         y=300, 
@@ -89,6 +90,7 @@ def TelaInicial(TelaInicial):
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
+    bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
         x=400, 
         y=350, 
@@ -106,6 +108,7 @@ def TelaInicial(TelaInicial):
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
+    bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
         x=400, 
         y=400, 
@@ -123,6 +126,7 @@ def TelaInicial(TelaInicial):
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
+    bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
         x=400, 
         y=450, 
@@ -140,6 +144,7 @@ def TelaInicial(TelaInicial):
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
+    bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
         x=400, 
         y=500, 
@@ -157,6 +162,7 @@ def TelaInicial(TelaInicial):
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
+    bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
         x=795, 
         y=595, 
@@ -183,7 +189,6 @@ def TelaInicial(TelaInicial):
         anchor=SW
     )
     # ------------------------------------------------------
-    router(1)
 
     TelaInicial.mainloop()
 

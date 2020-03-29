@@ -29,7 +29,7 @@ def view(TelaInicial):
     }
 
     dictPartida = {
-        "modo" : constants.btModoMatchNormal,
+        "partida" : constants.btModoMatchNormal,
         "monitor" : constants.btModoViewActive,
     }
 
@@ -58,7 +58,7 @@ def view(TelaInicial):
 
     def start():
         dicTeam = {
-            "partida" : str(dictPartida["modo"]),
+            "partida" : str(dictPartida["partida"]),
             "monitor" : str(dictPartida["monitor"]),
             "team1" : {
                 "teamName" : str(dictTeamName[1]),
@@ -69,7 +69,7 @@ def view(TelaInicial):
                 "path" : str(dictTeamPath[2])
             }
         }
-        # home.run(dicTeam)
+        home.run(dicTeam)
         # ------------------------------------------------------
         # Button Stop
         # ------------------------------------------------------
@@ -91,10 +91,10 @@ def view(TelaInicial):
     def change(id):
         # modo
         if ( id == 1 ):
-            if (dictPartida["modo"] == constants.btModoMatchNormal):
-                dictPartida["modo"] = constants.btModoMatchFast
+            if (dictPartida["partida"] == constants.btModoMatchNormal):
+                dictPartida["partida"] = constants.btModoMatchFast
             else:
-                dictPartida["modo"] = constants.btModoMatchNormal
+                dictPartida["partida"] = constants.btModoMatchNormal
         # monitor
         else:
             if (dictPartida["monitor"] == constants.btModoViewActive):
@@ -137,7 +137,7 @@ def view(TelaInicial):
             bt = Button(
                 TelaInicial, 
                 width=15, 
-                text=dictPartida["modo"], 
+                text=dictPartida["partida"], 
                 command=lambda change=change: change(1),
                 bg=constants.buttonColorConfig, 
                 fg=constants.letterColor,

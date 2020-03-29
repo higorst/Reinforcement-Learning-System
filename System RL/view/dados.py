@@ -7,7 +7,7 @@ from PIL import ImageTk, Image
 import constants.constants as constants
 from view import Router
 
-def view(TelaInicial):
+def view(TelaInicial):  
 
     def router(id):
         Router.router(id, TelaInicial)
@@ -23,7 +23,7 @@ def view(TelaInicial):
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btMenu = Button(
+    bt = Button(
         TelaInicial, 
         width=5, 
         text=constants.btTelaInicial, 
@@ -32,7 +32,8 @@ def view(TelaInicial):
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
-    btMenu.place(
+    bt.config(highlightbackground=constants.buttonHighLight)
+    bt.place(
         x=795, 
         y=595, 
         anchor=SE
@@ -40,7 +41,7 @@ def view(TelaInicial):
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btSair = Button(
+    bt = Button(
         TelaInicial, 
         width=5, 
         text=constants.btExit, 
@@ -49,7 +50,8 @@ def view(TelaInicial):
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
-    btSair.place(
+    bt.config(highlightbackground=constants.buttonHighLight)
+    bt.place(
         x=10, 
         y=595, 
         anchor=SW

@@ -1,42 +1,39 @@
 # -*- coding: UTF-8 -*-
 from tkinter import *
 from tkinter import messagebox
+from tkinter import filedialog
 from PIL import ImageTk, Image
 
 import constants.constants as constants
-import TelaInicial as telaInicial
-from view import Router as router
+from view import Router
 
-def view(TelaInicial):	
+def view(TelaInicial):  
 
-    def Sair():
-        TelaInicial.destroy()
-        TelaInicial.quit()
-
-    def Menu():
-        id = 0
-        router.router(id, TelaInicial)
+    def router(id):
+        Router.router(id, TelaInicial)
 
     # ------------------------------------------------------
     # Definições da view
     TelaInicial.title(
-    	constants.titleTela02
+        constants.titleTela01
     )
     TelaInicial.configure(
-    	background=constants.backgroundColor
+        background=constants.backgroundColor
     )
+    # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btMenu = Button(
+    bt = Button(
         TelaInicial, 
         width=5, 
         text=constants.btTelaInicial, 
-        command=Menu,
+        command=lambda router=router: router(0),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
-    btMenu.place(
+    bt.config(highlightbackground=constants.buttonHighLight)
+    bt.place(
         x=795, 
         y=595, 
         anchor=SE
@@ -44,16 +41,17 @@ def view(TelaInicial):
     # ------------------------------------------------------
 
     # ------------------------------------------------------
-    btSair = Button(
+    bt = Button(
         TelaInicial, 
         width=5, 
         text=constants.btExit, 
-        command=Sair,
+        command=lambda router=router: router(999),
         bg=constants.butonColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor
     )
-    btSair.place(
+    bt.config(highlightbackground=constants.buttonHighLight)
+    bt.place(
         x=10, 
         y=595, 
         anchor=SW

@@ -17,6 +17,7 @@ buttonColorConfig		= '#4caf50'
 buttonColorConfigActive	= '#087f23'
 letterColor 			= '#000'
 activeButtonColor		= '#fb8c00'
+buttonHighLight			= '#fb8c00'
 activeButtonColorInfo	= '#0077c2'
 
 # --------------------------------------------------------------

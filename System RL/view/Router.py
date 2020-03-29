@@ -6,6 +6,8 @@ from PIL import ImageTk, Image
 import constants.constants as constants
 import TelaInicial as telaInicial
 
+import os
+
 from view import partida
 from view import aprendizado
 from view import dados
@@ -21,6 +23,15 @@ def router(id, TelaInicial):
 
 	# Rotina para sair do sistema
 	if( id == 999 ):
+		# Apga diretórios __pycache__
+		input_ = "rm -r __pycache__ "+
+		"&& constants/__pycache__ "+
+		"&& img/__pycache__ "+
+		"&& view/__pycache__ "+
+		"&& view/code/__pycache__"
+		os.system(input_)
+
+		# Finaliza programa
 		TelaInicial.destroy()
 		TelaInicial.quit()
 
