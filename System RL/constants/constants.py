@@ -78,6 +78,9 @@ addressInfo02			= "img/info02.jpeg"
 addressInfo03			= "img/info03.jpeg"
 addressVS				= "img/vs.png"
 addressFootbalField		= "img/footbal.png"
+addressRefresh			= 'img/refresh.png'
+addressHome				= 'img/home.png'
+addressExit				= ''
 
 # --------------------------------------------------------------
 # Config

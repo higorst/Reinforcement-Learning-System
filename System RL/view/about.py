@@ -23,10 +23,11 @@ def view(TelaInicial):
     # ------------------------------------------------------
 
     # ------------------------------------------------------
+    icon = PhotoImage(file = constants.addressHome)
     bt = Button(
         TelaInicial, 
         width=5, 
-        text=constants.btTelaInicial, 
+        text=constants.btTelaInicial,
         command=lambda router=router: router(0),
         bg=constants.butonColor, 
         fg=constants.letterColor,

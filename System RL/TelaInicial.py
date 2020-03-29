@@ -183,6 +183,7 @@ def TelaInicial(TelaInicial):
         anchor=SW
     )
     # ------------------------------------------------------
+    router(5)
 
     TelaInicial.mainloop()
 

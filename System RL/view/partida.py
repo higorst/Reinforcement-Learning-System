@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-from tkinter import *
+from kinter import *
 from tkinter import messagebox
 from tkinter import filedialog
 from PIL import ImageTk, Image
@@ -36,6 +36,17 @@ def view(TelaInicial):
     def router(id):
         Router.router(id, TelaInicial)
         pass
+
+    def reset():
+        # Nome dos times
+        dictTeamName[1] = ''
+        dictTeamName[2] = ''
+
+        # Path para cada time
+        dictTeamPath[1] = ''
+        dictTeamPath[2] = ''
+
+        render()
 
     def stop():
         # ------------------------------------------------------
@@ -281,6 +292,24 @@ def view(TelaInicial):
                 anchor=CENTER
             )
             # ------------------------------------------------------
+        # Button - escolher novamente os times
+        else:
+            icon = PhotoImage(file = constants.addressRefresh)
+            bt = Button(
+                TelaInicial, 
+                width=30, 
+                image=icon, 
+                command=reset,
+                bg=constants.backgroundColor, 
+                fg=constants.letterColor,
+                activebackground=constants.activeButtonColor
+            )
+            bt.config(highlightbackground=constants.buttonHighLight)
+            bt.place(
+                x=10, 
+                y=10, 
+                anchor=NW
+            )
 
         renderConfigMatch(1)
         renderConfigMatch(2)
