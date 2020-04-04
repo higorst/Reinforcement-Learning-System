@@ -11,7 +11,7 @@ from view.code import partida
 from view.code import monitor
 
 def run(dicTeam):
-	def partida():
+	def partida_():
 		partida.run(dicTeam["partida"])
 
 	def time1():
@@ -20,16 +20,16 @@ def run(dicTeam):
 	def time2():
 		team2.run(dicTeam["team2"])     
 
-	def monitor():
+	def monitor_():
 		monitor.run(dicTeam["monitor"])
 
-	threading.Thread(target=partida).start()
+	threading.Thread(target=partida_).start()
+	sleep(1)
 	threading.Thread(target=time1).start()
+	# para forçar times entrarem em campo nessa ordem
+	sleep(2)
 	threading.Thread(target=time2).start()
-	threading.Thread(target=monitor).start()
-
-	# aguarda tempo da partida
-	sleep(170)
+	threading.Thread(target=monitor_).start()
 
 # --------------------------------------
 # var = subprocess.getoutput("ifconfig")

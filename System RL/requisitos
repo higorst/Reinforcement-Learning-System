@@ -1,0 +1,10 @@
+requisitos:
+
+Algumas configurações:
+      - Parâmetros: taxa de aprendizado, fator de desconto e e-greedy.
+      - Algoritmo de AR.
+      - Número de episódios.
+      - Matriz de aprendizado: utilizar uma zerada ou outra com já aprendizado acumulado.
+Resultados:
+      - Gráficos: saldo de gols, gols feitos ou gols sofridos.
+      - Ou de forma mais simples: mostras os valores em caixas de texto (média dos intervalos).

@@ -8,10 +8,13 @@ import constants.constants as constants
 
 from view import Router
 from view.code import home
+from view.code import getPlacar
+from view.code import getPlacar as placar
 
 import info as Info
 
-import os
+from time import sleep 
+import os, glob            
 from pathlib import Path
 
 def view(TelaInicial):	
@@ -32,6 +35,96 @@ def view(TelaInicial):
         "partida" : constants.btModoMatchNormal,
         "monitor" : constants.btModoViewActive,
     }
+    def closePopup(popupRoot):
+        # Finaliza popup
+        popupRoot.destroy()
+        popupRoot.quit()
+
+    def popup(s):
+        popupRoot = Tk()
+        popupRoot.title('INFO')
+        popupRoot.configure(
+            background=constants.backgroundColor
+        )
+        popupRoot.after(3000, lambda getTeam=closePopup: closePopup(popupRoot))
+        Label(
+            popupRoot, 
+            text='',
+            bg=constants.backgroundColor
+        ).pack()
+        Label(
+            popupRoot, 
+            text=s,
+            bg=constants.backgroundColor
+        ).pack()
+        popupRoot.geometry('400x50+700+500')
+        popupRoot.mainloop()
+
+    def winner(team1_, team2_):
+        msg_1 = 'not working msg'
+        msg_2 = ''
+        team1 = int(team1_)
+        team2 = int(team2_)
+        if (team1 > team2):
+            # team 1 winner
+            msg_1 = str(dictTeamName[1]) + constants.msgWinner
+        elif (team2 > team1):
+            # team 2 winner
+            msg_1 = str(dictTeamName[2]) + constants.msgWinner
+        else:
+            # empate
+            msg_1 = constants.msgEmpate
+        
+        if (dictPartida["monitor"] == constants.btModoViewActive):
+            msg_2 = constants.msgCloseMonitor
+        y_ = 460
+        # ------------------------------------------------------
+        # Winner
+        # ------------------------------------------------------
+        lb = Label(
+            TelaInicial, 
+            width=constants.widthLabelFinal, 
+            text=msg_1, 
+            bg=constants.backgroundColor,
+            fg=constants.letterColor
+        )    
+        lb.config(
+            font=(
+                constants.fontPersonalizadaTeam, 
+                constants.fontSizeTeamName
+            )
+        )
+        lb.place(
+            x=constants.xLenghtLabelTeam + 150, 
+            y=y_, 
+            anchor=CENTER
+        )
+        # ------------------------------------------------------
+        # ------------------------------------------------------
+        # Monitor
+        # ------------------------------------------------------
+        lb = Label(
+            TelaInicial, 
+            width=constants.widthLabelFinal, 
+            text=msg_2, 
+            bg=constants.backgroundColor,
+            fg=constants.letterColor
+        )    
+        lb.config(
+            font=(
+                constants.fontPersonalizadaTeam, 
+                constants.fontSizeTeamName
+            )
+        )
+        lb.place(
+            x=constants.xLenghtLabelTeam + 150, 
+            y=y_ + 50, 
+            anchor=CENTER
+        )
+        # ------------------------------------------------------
+        messagebox.showinfo('',msg_1)
+        if (len(msg_2) > 2):
+            messagebox.showinfo('',msg_2)
 
     def router(id):
         Router.router(id, TelaInicial)
@@ -67,7 +160,41 @@ def view(TelaInicial):
             anchor=CENTER
         )
 
+    def wait():
+        sleep(140)
+        done = False
+        while not done:
+            file = open('/home/ufrbots/.log/freedom.txt', 'r')
+            if (file.read() == 'True'):
+                file.close()
+                done = True
+            else:
+                file.close()
+                sleep(10)
+
+    def changeButtonStop():
+        # ------------------------------------------------------
+        # Button Stop
+        # ------------------------------------------------------
+        btMenu = Button(
+            TelaInicial, 
+            width=76, 
+            text=constants.btStop, 
+            command=reset,
+            bg=constants.buttonStopColor, 
+            fg=constants.letterColor,
+            activebackground=constants.buttonStopColorActive
+        )
+        btMenu.place(
+            x=402, 
+            y=579, 
+            anchor=CENTER
+        )
+
     def start():
+        if (dictPartida["monitor"] == constants.btModoViewInactive):
+            popup('Aguarde o final da partida ..')
+
         dicTeam = {
             "partida" : str(dictPartida["partida"]),
             "monitor" : str(dictPartida["monitor"]),
@@ -80,24 +207,104 @@ def view(TelaInicial):
                 "path" : str(dictTeamPath[2])
             }
         }
+        changeButtonStop()
         home.run(dicTeam)
         # ------------------------------------------------------
-        # Button Stop
+        # Aguardar resultado de partida
         # ------------------------------------------------------
-        btMenu = Button(
+        wait()
+        result_team_1, result_team_2 = placar.run()
+        # set result to msg winner
+        y_ = 250
+        # ------------------------------------------------------
+        # X
+        # ------------------------------------------------------
+        lbTeam02 = Label(
             TelaInicial, 
-            width=76, 
-            text=constants.btStop, 
-            command=stop,
-            bg=constants.buttonStopColor, 
-            fg=constants.letterColor,
-            activebackground=constants.buttonStopColorActive
+            width=constants.widthLabelFinal, 
+            text=constants.stringPlacar, 
+            bg=constants.backgroundColor,
+            fg=constants.letterColor
+        )    
+        lbTeam02.config(
+            font=(
+                constants.fontPersonalizadaPlacar, 
+                constants.fontSizePlacar
+            )
         )
-        btMenu.place(
-            x=402, 
-            y=579, 
+        lbTeam02.place(
+            x=constants.xLenghtLabelTeam + 150, 
+            y=y_ - 70, 
             anchor=CENTER
         )
+        # ------------------------------------------------------
+        # ------------------------------------------------------
+        # Label Team 01 - RESULT
+        # ------------------------------------------------------
+        lbTeam01 = Label(
+            TelaInicial, 
+            width=constants.widthLabelTeam, 
+            text=result_team_1, 
+            bg=constants.backgroundColor,
+            fg=constants.letterColor
+        )    
+        lbTeam01.config(
+            font=(
+                constants.fontPersonalizadaPlacar, 
+                constants.fontSizePlacar
+            )
+        )
+        lbTeam01.place(
+            x=constants.xLenghtLabelTeam, 
+            y=y_, 
+            anchor=CENTER
+        )
+        # ------------------------------------------------------
+        # ------------------------------------------------------
+        # X
+        # ------------------------------------------------------
+        lbTeam02 = Label(
+            TelaInicial, 
+            width=10, 
+            text=constants.stringXPlacar, 
+            bg=constants.backgroundColor,
+            fg=constants.letterColor
+        )    
+        lbTeam02.config(
+            font=(
+                constants.fontPersonalizadaPlacar, 
+                constants.fontSizePlacar
+            )
+        )
+        lbTeam02.place(
+            x=constants.xLenghtLabelTeam + 150, 
+            y=y_, 
+            anchor=CENTER
+        )
+        # ------------------------------------------------------
+        # ------------------------------------------------------
+        # Label Team 02 - RESULT
+        # ------------------------------------------------------
+        lbTeam02 = Label(
+            TelaInicial, 
+            width=constants.widthLabelTeam, 
+            text=result_team_2, 
+            bg=constants.backgroundColor,
+            fg=constants.letterColor
+        )    
+        lbTeam02.config(
+            font=(
+                constants.fontPersonalizadaPlacar, 
+                constants.fontSizePlacar
+            )
+        )
+        lbTeam02.place(
+            x=constants.xLenghtLabelTeam + 300, 
+            y=y_, 
+            anchor=CENTER
+        )
+        # ------------------------------------------------------
+        winner(result_team_1, result_team_2)
 
     def change(id):
         # modo
@@ -128,16 +335,16 @@ def view(TelaInicial):
 
         # Rotina para acessar arquivo star.sh
         # para pegar nome do time
-        data_folder = Path(TelaInicial.directory)
-        file_to_open = data_folder / constants.archiveToReadTeam
+        data_folder = Path(TelaInicial.directory + constants.archiveToReadTeam)
+        # file_to_open = str(data_folder) + constants.archiveToReadTeam
         f = open(
-            file_to_open, 
+            str(data_folder), 
             'r'
         )
         for line in f:
             if ( line[0:12] == constants.stringForNameTeam ):
                 dictTeamName[id] = line[13:len(line)].replace("\"","")
-                dictTeamName[id] = dictTeamName[id].replace(" ","")
+                dictTeamName[id] = dictTeamName[id].replace("\n","").replace("\"","")
         render()
 
     def renderConfigMatch(id):
@@ -208,7 +415,7 @@ def view(TelaInicial):
             panel = Label(TelaInicial, image=vs, bg=constants.backgroundColor)
             panel.place(x=400, y=40, anchor=N)
             # ------------------------------------------------------
-
+        
         # ------------------------------------------------------
         # Label Team 01
         # ------------------------------------------------------

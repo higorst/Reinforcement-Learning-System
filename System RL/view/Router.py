@@ -24,7 +24,7 @@ def router(id, TelaInicial):
 	# Rotina para sair do sistema
 	if( id == 999 ):
 		# Apga diretórios __pycache__
-		input_ = "rm -r __pycache__ && cd constants && rm -r __pycache__ && cd .. && cd view && rm -r __pycache__ && cd .. && cd view/code && rm -r __pycache__ && cd .. && cd .."
+		input_ = "rm -r /home/ufrbots/.System\ RL/__pycache__ && rm -r /home/ufrbots/.System\ RL/constants/__pycache__ && rm -r /home/ufrbots/.System\ RL//view/__pycache__ && rm -r /home/ufrbots/.System\ RL//view/code/__pycache__ && exit"
 		os.system(input_)
 
 		# Finaliza programa
