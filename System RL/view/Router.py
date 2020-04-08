@@ -10,11 +10,12 @@ import os
 
 from view import partida
 from view import aprendizado
+from view.ar import partida as partidaAR
 from view import dados
 from view import config
 from view import about
 
-def router(id, TelaInicial):
+def router(id, TelaInicial, dict_ = None):
 
 	# Apaga conteúdo da view
 	lista = TelaInicial.winfo_children()
@@ -24,7 +25,7 @@ def router(id, TelaInicial):
 	# Rotina para sair do sistema
 	if( id == 999 ):
 		# Apga diretórios __pycache__
-		input_ = "rm -r /home/ufrbots/.System\ RL/__pycache__ && rm -r /home/ufrbots/.System\ RL/constants/__pycache__ && rm -r /home/ufrbots/.System\ RL//view/__pycache__ && rm -r /home/ufrbots/.System\ RL//view/code/__pycache__ && exit"
+		input_ = "rm -r /home/ufrbots/.System\ RL/__pycache__ && rm -r /home/ufrbots/.System\ RL/constants/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/code/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/code/aprendizado/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/ar/__pycache__ && exit"
 		os.system(input_)
 
 		# Finaliza programa
@@ -52,6 +53,12 @@ def router(id, TelaInicial):
     # ------------------------------------------------------
 	elif( id == 2 ):
 		aprendizado.view(TelaInicial)
+
+	# ------------------------------------------------------
+	# Tela AR - Partida
+    # ------------------------------------------------------
+	elif( id == 21 ):
+		partidaAR.view(TelaInicial, dict_)
 
     # ------------------------------------------------------
 	# Tela dados

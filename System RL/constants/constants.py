@@ -71,11 +71,24 @@ msgCloseMonitor			= "FECHE O MONITOR!"
 stringPlacar			= "Placar"
 stringXPlacar			= "X"
 
-infoAlpha				= 'Alpha'
-infoGamma				= 'Gamma'
-infoEpsilon				= 'Epsilon'
-infoAlgorithm			= 'Algorithm'
-infoMatriz				= 'Matriz'
+labelEpisodes			= 'Episodes'
+labelAlpha				= 'Alpha'
+labelGamma				= 'Gamma'
+labelEpsilon			= 'Epsilon'
+labelAlgorithm			= 'Algorithm'
+labelMatriz				= 'Matriz'
+
+# --------------------------------------------------------------
+# Popup
+# --------------------------------------------------------------
+titlePopup				= 'INFO'
+infoEpisodes			= 'Número total de partidas\n** Deve ser nº inteiro'
+infoAlpha				= 'Taxa de aprendizado\n** Deve ser nº entre 0 - 1'
+infoGamma				= 'Fator de desconto\n** Deve ser nº entre 0 - 1'
+infoEpsilon				= 'Aleatoriedade na escola das ações. Ex: 0.1 -> 10%\n** Deve ser nº entre 0 - 1'
+infoAlgorithm			= 'Algoritmo de aprendizado por reforço\n** Apenas o Q_Learning está disponível'
+infoMatriz				= 'Matriz Q de aprendizado'
+sizePopup				= '400x50+500+300'
 
 # --------------------------------------------------------------
 # Address
@@ -92,9 +105,12 @@ addressFootbalField		= "/home/ufrbots/.System RL/img/footbal.png"
 addressRefresh			= '/home/ufrbots/.System RL/img/refresh.png'
 addressInfo				= '/home/ufrbots/.System RL/img/info.png'
 addressHome				= '/home/ufrbots/.System RL/img/home.png'
+addressAR				= '/home/ufrbots/.System RL/img/rocket.png'
 addressExit				= ''
 fileFreedom				= '/home/ufrbots/.log/freedom.txt'
 createLogDir			= 'cd && rm -r /home/ufrbots/.log && mkdir /home/ufrbots/.log'
+
+addressDirAR			= '/home/ufrbots/Documents/AR_System'
 
 # --------------------------------------------------------------
 # Config

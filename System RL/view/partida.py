@@ -7,6 +7,7 @@ from PIL import ImageTk, Image
 import constants.constants as constants
 
 from view import Router
+from view import popup as popup_
 from view.code import home
 from view.code import getPlacar
 from view.code import getPlacar as placar
@@ -35,30 +36,8 @@ def view(TelaInicial):
         "partida" : constants.btModoMatchNormal,
         "monitor" : constants.btModoViewActive,
     }
-    def closePopup(popupRoot):
-        # Finaliza popup
-        popupRoot.destroy()
-        popupRoot.quit()
-
     def popup(s):
-        popupRoot = Tk()
-        popupRoot.title('INFO')
-        popupRoot.configure(
-            background=constants.backgroundColor
-        )
-        popupRoot.after(3000, lambda getTeam=closePopup: closePopup(popupRoot))
-        Label(
-            popupRoot, 
-            text='',
-            bg=constants.backgroundColor
-        ).pack()
-        Label(
-            popupRoot, 
-            text=s,
-            bg=constants.backgroundColor
-        ).pack()
-        popupRoot.geometry('400x50+700+500')
-        popupRoot.mainloop()
+        popup_.run(s)
 
     def winner(team1_, team2_):
         msg_1 = 'not working msg'
