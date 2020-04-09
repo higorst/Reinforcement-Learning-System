@@ -39,6 +39,7 @@ titleAskDirectory		= "Acesse diretório do time"
 # Title's Button
 # --------------------------------------------------------------
 btTelaInicial 			= "Voltar"
+btMenu		 			= "Voltar"
 btInfo					= "Info"
 btStart					= "Iniciar Partida"
 btStop					= "Finalizar"
@@ -111,6 +112,9 @@ fileFreedom				= '/home/ufrbots/.log/freedom.txt'
 createLogDir			= 'cd && rm -r /home/ufrbots/.log && mkdir /home/ufrbots/.log'
 
 addressDirAR			= '/home/ufrbots/Documents/AR_System'
+addressPercent_1		= '/home/ufrbots/.System RL/img/percent_1.png'
+addressPercent_2		= '/home/ufrbots/.System RL/img/percent_2.png'
+addressPercent_3		= '/home/ufrbots/.System RL/img/percent_3.png'
 
 # --------------------------------------------------------------
 # Config
@@ -126,6 +130,9 @@ fontSizeTeamName		= 15
 fontSizeCopyright		= 9
 timeOfMatch				= 170
 sizeIconInfo			= 12
+
+fontPersonalizadaDesc	= "Ubuntu"
+fontSizeDesc			= 12
 
 # --------------------------------------------------------------
 # Dimensions

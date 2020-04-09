@@ -5,6 +5,7 @@ import subprocess
 from time import sleep
 import threading
 
+from view import popup as popup_
 import constants.constants as constants  
 
 # from view.code import team1
@@ -12,7 +13,15 @@ import constants.constants as constants
 # from view.code import partida
 # from view.code import monitor
 
-def run(dict_config):
+def run(dict_config, op):
+
+	def sucess():
+		msg = 'Sucesso'
+		popup_.run(msg, 2000)
+
+	def setParamsPopup():
+		msg = 'Configurando Time de Aprendizado!\nAguarde ..'
+		popup_.run(msg, 5000)
 
 	def setParams():
 		# SETAR CONFIGURAÇÕES PARA TIME AR_SYSTEM
@@ -39,6 +48,10 @@ def run(dict_config):
 		# ---- FALTA
 		pass
 
+	def configPopup():
+		msg = 'Verificando configuração ...\n'
+		popup_.run(msg, 2000)
+
 	def config():
 		# -----------
 		# ./configure
@@ -53,14 +66,19 @@ def run(dict_config):
 		var = subprocess.getoutput(input_)
 		pass	
 
-	t1 = threading.Thread(target=setParams).start()
-	while t1.is_alive():
-		print('T1 is alive')
-		sleep(1)
+	if op == 1:
+		threading.Thread(target=setParamsPopup).start()
+		t1 = threading.Thread(target=setParams)
+		t1.start()
+		while t1.isAlive():
+			sleep(1)
 
-	t2 = threading.Thread(target=config).start()
-	while t2.is_alive():
-		print('T2 is alive')
-		sleep(1)
+	else:
+		threading.Thread(target=configPopup).start()
+		t2 = threading.Thread(target=config)
+		t2.start()
+		while t2.isAlive():
+			sleep(1)
+		threading.Thread(target=sucess).start()
 
 	return True

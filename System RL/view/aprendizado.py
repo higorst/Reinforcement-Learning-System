@@ -4,6 +4,8 @@ from tkinter import messagebox
 from tkinter import filedialog
 from PIL import ImageTk, Image
 
+from time import sleep
+
 import constants.constants as constants
 from view import Router
 from view import popup as popup_
@@ -31,8 +33,10 @@ def view(TelaInicial):
         "alpha" : 0,
         "gamma" : 0,
         "epsilon" : 0,
-        "algorithm" : '',
-        "episodes" : 0,
+        "algorithm" : 1,
+        "episodes" : 20,
+        "episode" : 1,
+        "started" : False,
         "matriz" : {},
     }
 
@@ -52,39 +56,32 @@ def view(TelaInicial):
         Router.router(id, TelaInicial, dict_config)
 
     def validar():
-        msg = 'Configurando Time de Aprendizado!\nAguarde ..'
-        try:            
-            if (
-                    int(episodes.get()) >= 1 and
-                    float(alpha.get()) <= 1 and float(alpha.get()) >= 0 and
-                    float(gamma.get()) <= 1 and float(gamma.get()) >= 0 and
-                    float(epsilon.get()) <= 1 and float(epsilon.get()) >= 0 and
-                    str(var_algorithm.get()) != '' and
-                    str(var_matriz.get()) != ''
-                ):
-                dict_config["alpha"] = alpha.get()
-                dict_config["gamma"] = gamma.get()
-                dict_config["epsilon"] = epsilon.get()
-                dict_config["algorithm"] = var_algorithm.get()
-                dict_config["episodes"] = episodes.get()
-                dict_config["matriz"] = var_matriz.get()
-                popup_.run(msg, 80000)
-                # Ir para tela de aprendizagem
-            else:
-                msg = 'Parâmetros inválidos!'
-                popup(msg)
-        except Exception as e:
+        if (int(episodes.get()) >= 1 and
+            float(alpha.get()) <= 1 and float(alpha.get()) >= 0 and
+            float(gamma.get()) <= 1 and float(gamma.get()) >= 0 and
+            float(epsilon.get()) <= 1 and float(epsilon.get()) >= 0 and
+            str(var_algorithm.get()) != '' and
+            str(var_matriz.get()) != ''):
+
+            dict_config["alpha"] = alpha.get()
+            dict_config["gamma"] = gamma.get()
+            dict_config["epsilon"] = epsilon.get()
+            dict_config["algorithm"] = var_algorithm.get()
+            dict_config["episodes"] = episodes.get()
+            dict_config["matriz"] = var_matriz.get()
+            
+            # Escrever alterações no arquivo
+            if configAR.run(dict_config, 1):
+                # ./configure && make
+                router(21, dict_config)
+                if (configAR.run(dict_config, 2)):
+                    # chamar próxima tela
+                    sleep(1)
+                    router(21, dict_config)
+        else:
             msg = 'Parâmetros inválidos!'
             popup(msg)
 
-        
-        if (configAR.run(dict_config)):
-            msg = 'Sucesso!\n'
-            popup(msg)
-            # chamar próxima tela
-            router(21, dict_config)
-
-            
     # ------------------------------------------------------
     # Definições da view
     TelaInicial.title(
@@ -449,4 +446,5 @@ def view(TelaInicial):
     )
     # ------------------------------------------------------
 
+    router(21, dict_config)
     TelaInicial.mainloop()
