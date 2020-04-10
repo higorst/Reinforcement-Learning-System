@@ -20,18 +20,21 @@ activeButtonColor		= '#fb8c00'
 buttonHighLight			= '#fb8c00'
 activeButtonColorInfo	= '#0077c2'
 
+listboxBG				= '#757575'
+listboxFG				= '#fff'
+
 # --------------------------------------------------------------
 # Title
 # --------------------------------------------------------------
-titleHome 				= "Sistema de Aprendizado por Reforço"
+titleHome 				= "Sistema de Aprendizado por Reforço para Futebol de Robôs"
 titleButtonInfoMessage	= "OK"
-titleTelaInicial 		= "Interface de Aprendizado por Reforço"
+titleTelaInicial 		= titleHome
 titleTelaInfo	 		= "Como iniciar uma simulação"
-titleTela01				= "Ambiente de Aprendizado"
-titleTela02				= "Resultados"
-titleTela03				= "Dados"
-titleTela04				= "Configurações"
-titleTela05				= "Sobre"
+titleTela01				= titleHome
+titleTela02				= titleHome
+titleTela03				= titleHome
+titleTela04				= titleHome
+titleTela05				= titleHome
 titleCopyright			= "Copyright 2020 : UFRBots"
 titleAskDirectory		= "Acesse diretório do time"
 
@@ -39,15 +42,15 @@ titleAskDirectory		= "Acesse diretório do time"
 # Title's Button
 # --------------------------------------------------------------
 btTelaInicial 			= "Voltar"
-btMenu		 			= "Voltar"
+btMenu		 			= "Menu"
 btInfo					= "Info"
 btStart					= "Iniciar Partida"
 btStop					= "Finalizar"
 btInfoBack				= "Entendi"
 btExit 					= "Sair"
 btTelaInicial01 		= "Nova Partida"
-btTelaInicial02 		= "AR"
-btTelaInicial03 		= "Baixar Dados"
+btTelaInicial02 		= "Aprendizado"
+btTelaInicial03 		= "Assistir Partidas"
 btTelaInicial04 		= "Configurações"
 btTelaInicial05 		= "Sobre"
 btGetTeam01				= "Time 1"
@@ -72,12 +75,29 @@ msgCloseMonitor			= "FECHE O MONITOR!"
 stringPlacar			= "Placar"
 stringXPlacar			= "X"
 
-labelEpisodes			= 'Episodes'
-labelAlpha				= 'Alpha'
-labelGamma				= 'Gamma'
-labelEpsilon			= 'Epsilon'
-labelAlgorithm			= 'Algorithm'
+ERROR					= '9999'
+
+labelEpisodes			= 'Episódios'
+labelAlpha				= 'Taxa de Aprendizado'
+labelGamma				= 'Fator de Desconto'
+labelEpsilon			= 'Política e-greedy'
+labelAlgorithm			= 'Algoritmo'
 labelMatriz				= 'Matriz'
+labelResultTeam			= 'AR    x    Res'
+labelResult 			= 'Resultados:'
+labelLearning			= 'Aprendendo ..'
+
+btAfterAR				= 'Iniciar'
+btAfterAguarde			= 'Aguarde'
+btBeforeAR				= 'Resultados'
+
+labelGRAPH_AR			= 'Gols AR'
+labelGRAPH_Res			= 'Gols Reserva'
+labelGRAPH_Saldo		= 'Saldo de Gols'
+
+infoLogplayer			= 'Selecione uma opção e clique em \"Assistir\"\nFeche o monitor logplayer para acessar o sistema novamente!'
+msgToSelectLogplayer	= 'Selecione primeiro uma opção!'
+titleLogplayer			= 'Monitor de Partidas AR'
 
 # --------------------------------------------------------------
 # Popup
@@ -116,6 +136,11 @@ addressPercent_1		= '/home/ufrbots/.System RL/img/percent_1.png'
 addressPercent_2		= '/home/ufrbots/.System RL/img/percent_2.png'
 addressPercent_3		= '/home/ufrbots/.System RL/img/percent_3.png'
 
+addressDate				= '/home/ufrbots/.System RL/img/date.png'
+addressHour				= '/home/ufrbots/.System RL/img/hour.png'
+addressScoreboard		= '/home/ufrbots/.System RL/img/scoreboard.png'
+
+
 # --------------------------------------------------------------
 # Config
 # --------------------------------------------------------------
@@ -123,13 +148,15 @@ viewSize				= "800x600"
 fontPersonalizada 		= "Ubuntu"
 fontPersonalizadaTeam	= "Purisa"
 fontPersonalizadaPlacar = "DS-Digital"
-fontSizeTitleTelaIn		= 24
+fontSizeTitleTelaIn		= 20
 fontSizeTitleTelaInfo	= 11 
 fontSizePlacar			= 28
 fontSizeTeamName		= 15
 fontSizeCopyright		= 9
 timeOfMatch				= 170
 sizeIconInfo			= 12
+
+fontPersonalizadaList	= 'consolas'
 
 fontPersonalizadaDesc	= "Ubuntu"
 fontSizeDesc			= 12

@@ -12,21 +12,6 @@ from view import popup as popup_
 
 from view.code.aprendizado import configAR
 
-# ------------------------------------------------------
-# requisitos:
-# ------------------------------------------------------
-
-# ------------------------------------------------------
-# Algumas configurações:
-#       - Parâmetros: taxa de aprendizado, fator de desconto e e-greedy.
-#       - Algoritmo de AR.
-#       - Número de episódios.
-#       - Matriz de aprendizado: utilizar uma zerada ou outra com já aprendizado acumulado.
-# Resultados:
-#       - Gráficos: saldo de gols, gols feitos ou gols sofridos.
-#       - Ou de forma mais simples: mostras os valores em caixas de texto (média dos intervalos).
-# ------------------------------------------------------
-
 def view(TelaInicial):  
 
     dict_config = {
@@ -40,14 +25,14 @@ def view(TelaInicial):
         "matriz" : {},
     }
 
-    def selMatriz():
-        TelaInicial.directory = filedialog.askopenfilename(
-            initialdir=constants.initialDirectory,
-            title='Selecione uma matriz de aprendizado',
-            filetypes=[('q_table files', '.txt')]
-        )
-        # Armazena path
-        pathFileTable = TelaInicial.directory
+    # def selMatriz():
+    #     TelaInicial.directory = filedialog.askopenfilename(
+    #         initialdir=constants.initialDirectory,
+    #         title='Selecione uma matriz de aprendizado',
+    #         filetypes=[('q_table files', '.txt')]
+    #     )
+    #     # Armazena path
+    #     pathFileTable = TelaInicial.directory
 
     def popup(s):
         popup_.run(s)
@@ -73,7 +58,6 @@ def view(TelaInicial):
             # Escrever alterações no arquivo
             if configAR.run(dict_config, 1):
                 # ./configure && make
-                router(21, dict_config)
                 if (configAR.run(dict_config, 2)):
                     # chamar próxima tela
                     sleep(1)
@@ -102,20 +86,20 @@ def view(TelaInicial):
     # ------------------------------------------------------
     # Congiurações do AR - INÍCIO
     # ------------------------------------------------------
-    dist_x = 250
+    dist_x = 210
     # Episodes
     Label(
         TelaInicial, 
         text=constants.labelEpisodes,
         bg=constants.backgroundColor
     ).place(
-        x=dist_x, 
+        x=dist_x + 10, 
         y=250, 
         anchor=W
     )
     episodes = Entry(TelaInicial)
     episodes.place(
-        x=dist_x + 100, 
+        x=dist_x + 170, 
         y=250, 
         anchor=W
     )
@@ -126,13 +110,13 @@ def view(TelaInicial):
         text=constants.labelAlpha,
         bg=constants.backgroundColor
     ).place(
-        x=dist_x, 
+        x=dist_x + 10, 
         y=300, 
         anchor=W
     )
     alpha = Entry(TelaInicial)
     alpha.place(
-        x=dist_x + 100, 
+        x=dist_x + 170, 
         y=300, 
         anchor=W
     )
@@ -142,13 +126,13 @@ def view(TelaInicial):
         text=constants.labelGamma,
         bg=constants.backgroundColor
     ).place(
-        x=dist_x, 
+        x=dist_x + 10, 
         y=350, 
         anchor=W
     )
     gamma = Entry(TelaInicial)
     gamma.place(
-        x=dist_x + 100, 
+        x=dist_x + 170, 
         y=350, 
         anchor=W
     )
@@ -158,13 +142,13 @@ def view(TelaInicial):
         text=constants.labelEpsilon,
         bg=constants.backgroundColor
     ).place(
-        x=dist_x, 
+        x=dist_x + 10, 
         y=400, 
         anchor=W
     )
     epsilon = Entry(TelaInicial)
     epsilon.place(
-        x=dist_x + 100, 
+        x=dist_x + 170, 
         y=400, 
         anchor=W
     )
@@ -174,7 +158,7 @@ def view(TelaInicial):
         text=constants.labelAlgorithm,
         bg=constants.backgroundColor
     ).place(
-        x=dist_x, 
+        x=dist_x + 10, 
         y=450, 
         anchor=W
     )
@@ -184,7 +168,7 @@ def view(TelaInicial):
         text=constants.labelMatriz,
         bg=constants.backgroundColor
     ).place(
-        x=dist_x, 
+        x=dist_x + 10, 
         y=500, 
         anchor=W
     )
@@ -202,7 +186,7 @@ def view(TelaInicial):
         highlightbackground=constants.backgroundColor
     )
     algorithm_1.place(
-        x=dist_x + 100, 
+        x=dist_x + 170, 
         y=450, 
         anchor=W
     )
@@ -219,7 +203,7 @@ def view(TelaInicial):
         highlightbackground=constants.backgroundColor
     )
     algorithm_2.place(
-        x=dist_x + 200, 
+        x=dist_x + 290, 
         y=450, 
         anchor=W
     )
@@ -228,17 +212,16 @@ def view(TelaInicial):
     var_matriz = IntVar()
     matriz_1 = Radiobutton(
         TelaInicial, 
-        text="Selecione", 
+        text="Atual", 
         variable=var_matriz, 
         value=1,
-        command=selMatriz,
         bg=constants.backgroundColor, 
         fg=constants.letterColor,
         activebackground=constants.activeButtonColor,
         highlightbackground=constants.backgroundColor
     )
     matriz_1.place(
-        x=dist_x + 100, 
+        x=dist_x + 170, 
         y=500, 
         anchor=W
     )
@@ -254,7 +237,7 @@ def view(TelaInicial):
         highlightbackground=constants.backgroundColor
     )
     matriz_2.place(
-        x=dist_x + 200, 
+        x=dist_x + 290, 
         y=500, 
         anchor=W
     )
@@ -281,7 +264,7 @@ def view(TelaInicial):
     )
     bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
-        x=dist_x + 80, 
+        x=dist_x + 150, 
         y=250, 
         anchor=W
     )
@@ -301,7 +284,7 @@ def view(TelaInicial):
     )
     bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
-        x=dist_x + 80, 
+        x=dist_x + 150, 
         y=300, 
         anchor=W
     )
@@ -321,7 +304,7 @@ def view(TelaInicial):
     )
     bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
-        x=dist_x + 80, 
+        x=dist_x + 150, 
         y=350, 
         anchor=W
     )
@@ -341,7 +324,7 @@ def view(TelaInicial):
     )
     bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
-        x=dist_x + 80, 
+        x=dist_x + 150, 
         y=400, 
         anchor=W
     )
@@ -361,7 +344,7 @@ def view(TelaInicial):
     )
     bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
-        x=dist_x + 80, 
+        x=dist_x + 150, 
         y=450, 
         anchor=W
     )
@@ -381,7 +364,7 @@ def view(TelaInicial):
     )
     bt.config(highlightbackground=constants.buttonHighLight)
     bt.place(
-        x=dist_x + 80, 
+        x=dist_x + 150, 
         y=500, 
         anchor=W
     )
@@ -446,5 +429,4 @@ def view(TelaInicial):
     )
     # ------------------------------------------------------
 
-    router(21, dict_config)
     TelaInicial.mainloop()

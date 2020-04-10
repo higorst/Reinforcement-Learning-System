@@ -2,6 +2,8 @@
 import os
 import subprocess
 
+from sys import exit
+
 from time import sleep 
 import os, glob            
 import constants.constants as constants  
@@ -27,20 +29,9 @@ def run(mode):
 		input_ = "cd && cd .log/ && rcssserver"
 	var = subprocess.getoutput(input_)
 
-	sleep(12)
 	os.chdir("/home/ufrbots/.log")
 	
-	while glob.glob("*.rcl") == []:
-		print('NOT FIND - PARTIDA')
-		sleep(1)
-
-	arq = glob.glob("*.rcl")[0]
-	cte = 0
-	while arq == "incomplete.rcl" and cte < 20:
-		print('INCOMPLETE - PARTIDA')
-		sleep(1)
-		cte = cte + 1
-		arq = glob.glob("*.rcl")[0]
+	sleep(5)
 
 	# para avisar que resultado pode ser coletado
 	file = open(constants.fileFreedom, 'w')

@@ -23,6 +23,9 @@ def run(dicTeam):
 	def monitor_():
 		monitor.run(dicTeam["monitor"])
 
+	input_ = "cd && rm -r /home/ufrbots/.log && mkdir /home/ufrbots/.log"
+	var = subprocess.getoutput(input_)
+
 	threading.Thread(target=partida_).start()
 	sleep(1)
 	threading.Thread(target=time1).start()

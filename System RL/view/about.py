@@ -58,3 +58,5 @@ def view(TelaInicial):
         anchor=SW
     )
     # ------------------------------------------------------
+
+    TelaInicial.mainloop()

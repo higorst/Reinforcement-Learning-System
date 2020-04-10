@@ -9,7 +9,6 @@ import constants.constants as constants
 from view import Router
 from view import popup as popup_
 from view.code import home
-from view.code import getPlacar
 from view.code import getPlacar as placar
 
 import info as Info

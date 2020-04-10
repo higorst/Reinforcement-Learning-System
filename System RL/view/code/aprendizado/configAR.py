@@ -8,20 +8,18 @@ import threading
 from view import popup as popup_
 import constants.constants as constants  
 
-# from view.code import team1
-# from view.code import team2
-# from view.code import partida
-# from view.code import monitor
-
 def run(dict_config, op):
 
 	def sucess():
 		msg = 'Sucesso'
-		popup_.run(msg, 2000)
+		popup_.run(msg, 1000)
 
 	def setParamsPopup():
-		msg = 'Configurando Time de Aprendizado!\nAguarde ..'
-		popup_.run(msg, 5000)
+		msg = 'Verificando parâmetros ...\n'
+		popup_.run(msg, 2000)
+		if int(dict_config["matriz"]) == 2:
+			msg = 'Criando Matriz'
+			popup_.run(msg, 2000)
 
 	def setParams():
 		# SETAR CONFIGURAÇÕES PARA TIME AR_SYSTEM
@@ -45,12 +43,20 @@ def run(dict_config, op):
 		f.write(new)
 		f.close()
 		# SETAR MATRIZ
-		# ---- FALTA
-		pass
+		if int(dict_config["matriz"]) == 2:
+			path = '/home/ufrbots/Documents/AR_System/q.txt'
+			f_ = open(path, 'w')
+			for i in range(0,32):
+				for j in range(0,6):
+					f_.write("0.00")
+					if j < 5:
+						f_.write(" ")
+				f_.write("\n")
+			f_.close()
 
 	def configPopup():
-		msg = 'Verificando configuração ...\n'
-		popup_.run(msg, 2000)
+		msg = 'Configurando Time de Aprendizado!\nAguarde ..'
+		popup_.run(msg, 22000)
 
 	def config():
 		# -----------
