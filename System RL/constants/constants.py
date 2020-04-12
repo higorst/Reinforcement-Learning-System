@@ -45,13 +45,14 @@ btTelaInicial 			= "Voltar"
 btMenu		 			= "Menu"
 btInfo					= "Info"
 btStart					= "Iniciar Partida"
+btAguarde				= "Aguarde"
 btStop					= "Finalizar"
 btInfoBack				= "Entendi"
 btExit 					= "Sair"
 btTelaInicial01 		= "Nova Partida"
 btTelaInicial02 		= "Aprendizado"
 btTelaInicial03 		= "Assistir Partidas"
-btTelaInicial04 		= "Configurações"
+btTelaInicial04 		= "Tutorial"
 btTelaInicial05 		= "Sobre"
 btGetTeam01				= "Time 1"
 btGetTeam02				= "Time 2"
@@ -140,11 +141,19 @@ addressDate				= '/home/ufrbots/.System RL/img/date.png'
 addressHour				= '/home/ufrbots/.System RL/img/hour.png'
 addressScoreboard		= '/home/ufrbots/.System RL/img/scoreboard.png'
 
+addressPlay				= '/home/ufrbots/.System RL/img/play.png'
+addressMovie01			= '/home/ufrbots/.System\ RL/movie/video01.mp4'
+addressMovie02			= '/home/ufrbots/.System\ RL/movie/video02.mp4'
+addressMovie03			= '/home/ufrbots/.System\ RL/movie/video03.mp4'
+addressMovie01Time		= 38
+addressMovie02Time		= 43
+addressMovie03Time		= 21
+
 
 # --------------------------------------------------------------
 # Config
 # --------------------------------------------------------------
-viewSize				= "800x600"
+viewSize				= "800x600+300+50"
 fontPersonalizada 		= "Ubuntu"
 fontPersonalizadaTeam	= "Purisa"
 fontPersonalizadaPlacar = "DS-Digital"

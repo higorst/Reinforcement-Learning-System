@@ -13,6 +13,7 @@ from view.code import getPlacar as placar
 
 import info as Info
 
+import threading
 from time import sleep 
 import os, glob            
 from pathlib import Path
@@ -37,6 +38,9 @@ def view(TelaInicial):
     }
     def popup(s):
         popup_.run(s)
+
+    def showMessage():
+        popup_.run("Aguarde o final da partida ..")
 
     def winner(team1_, team2_):
         msg_1 = 'not working msg'
@@ -100,7 +104,8 @@ def view(TelaInicial):
             anchor=CENTER
         )
         # ------------------------------------------------------
-        messagebox.showinfo('',msg_1)
+        # messagebox.showinfo('',msg_1)
+        popup(msg_1)
         if (len(msg_2) > 2):
             messagebox.showinfo('',msg_2)
 
@@ -169,9 +174,50 @@ def view(TelaInicial):
             anchor=CENTER
         )
 
-    def start():
+    def afterBegin():
         if (dictPartida["monitor"] == constants.btModoViewInactive):
-            popup('Aguarde o final da partida ..')
+            threading.Thread(target=showMessage).start()
+        y_ = 250
+        # ------------------------------------------------------
+        # Partida em andamento
+        # ------------------------------------------------------
+        lbTeam02 = Label(
+            TelaInicial, 
+            width=constants.widthLabelFinal, 
+            text='Partida em andamento ..', 
+            bg=constants.backgroundColor,
+            fg=constants.letterColor
+        )    
+        lbTeam02.config(
+            font=(
+                constants.fontPersonalizadaList, 
+                constants.fontSizeDesc
+            )
+        )
+        lbTeam02.place(
+            x=constants.xLenghtLabelTeam + 150, 
+            y=y_ - 70, 
+            anchor=CENTER
+        )
+        # ------------------------------------------------------
+        # ------------------------------------------------------
+        # Button Stop
+        # ------------------------------------------------------
+        btMenu = Button(
+            TelaInicial, 
+            width=76, 
+            text=constants.btAguarde, 
+            bg=constants.buttonStopColor, 
+            fg=constants.letterColor,
+            activebackground=constants.buttonStopColorActive
+        )
+        btMenu.place(
+            x=402, 
+            y=579, 
+            anchor=CENTER
+        )
+
+    def start():       
 
         dicTeam = {
             "partida" : str(dictPartida["partida"]),
@@ -185,104 +231,112 @@ def view(TelaInicial):
                 "path" : str(dictTeamPath[2])
             }
         }
-        changeButtonStop()
         home.run(dicTeam)
+        afterBegin()
+        TelaInicial.update_idletasks()
         # ------------------------------------------------------
         # Aguardar resultado de partida
         # ------------------------------------------------------
         wait()
+        changeButtonStop()
         result_team_1, result_team_2 = placar.run()
-        # set result to msg winner
-        y_ = 250
-        # ------------------------------------------------------
-        # X
-        # ------------------------------------------------------
-        lbTeam02 = Label(
-            TelaInicial, 
-            width=constants.widthLabelFinal, 
-            text=constants.stringPlacar, 
-            bg=constants.backgroundColor,
-            fg=constants.letterColor
-        )    
-        lbTeam02.config(
-            font=(
-                constants.fontPersonalizadaPlacar, 
-                constants.fontSizePlacar
+        if (result_team_1 != '999' and result_team_2 != '999'):
+            # set result to msg winner
+            y_ = 250
+            # ------------------------------------------------------
+            # X
+            # ------------------------------------------------------
+            lbTeam02 = Label(
+                TelaInicial, 
+                width=constants.widthLabelFinal, 
+                text=constants.stringPlacar, 
+                bg=constants.backgroundColor,
+                fg=constants.letterColor
+            )    
+            lbTeam02.config(
+                font=(
+                    constants.fontPersonalizadaPlacar, 
+                    constants.fontSizePlacar
+                )
             )
-        )
-        lbTeam02.place(
-            x=constants.xLenghtLabelTeam + 150, 
-            y=y_ - 70, 
-            anchor=CENTER
-        )
-        # ------------------------------------------------------
-        # ------------------------------------------------------
-        # Label Team 01 - RESULT
-        # ------------------------------------------------------
-        lbTeam01 = Label(
-            TelaInicial, 
-            width=constants.widthLabelTeam, 
-            text=result_team_1, 
-            bg=constants.backgroundColor,
-            fg=constants.letterColor
-        )    
-        lbTeam01.config(
-            font=(
-                constants.fontPersonalizadaPlacar, 
-                constants.fontSizePlacar
+            lbTeam02.place(
+                x=constants.xLenghtLabelTeam + 150, 
+                y=y_ - 70, 
+                anchor=CENTER
             )
-        )
-        lbTeam01.place(
-            x=constants.xLenghtLabelTeam, 
-            y=y_, 
-            anchor=CENTER
-        )
-        # ------------------------------------------------------
-        # ------------------------------------------------------
-        # X
-        # ------------------------------------------------------
-        lbTeam02 = Label(
-            TelaInicial, 
-            width=10, 
-            text=constants.stringXPlacar, 
-            bg=constants.backgroundColor,
-            fg=constants.letterColor
-        )    
-        lbTeam02.config(
-            font=(
-                constants.fontPersonalizadaPlacar, 
-                constants.fontSizePlacar
+            # ------------------------------------------------------
+            # ------------------------------------------------------
+            # Label Team 01 - RESULT
+            # ------------------------------------------------------
+            lbTeam01 = Label(
+                TelaInicial, 
+                width=constants.widthLabelTeam, 
+                text=result_team_1, 
+                bg=constants.backgroundColor,
+                fg=constants.letterColor
+            )    
+            lbTeam01.config(
+                font=(
+                    constants.fontPersonalizadaPlacar, 
+                    constants.fontSizePlacar
+                )
             )
-        )
-        lbTeam02.place(
-            x=constants.xLenghtLabelTeam + 150, 
-            y=y_, 
-            anchor=CENTER
-        )
-        # ------------------------------------------------------
-        # ------------------------------------------------------
-        # Label Team 02 - RESULT
-        # ------------------------------------------------------
-        lbTeam02 = Label(
-            TelaInicial, 
-            width=constants.widthLabelTeam, 
-            text=result_team_2, 
-            bg=constants.backgroundColor,
-            fg=constants.letterColor
-        )    
-        lbTeam02.config(
-            font=(
-                constants.fontPersonalizadaPlacar, 
-                constants.fontSizePlacar
+            lbTeam01.place(
+                x=constants.xLenghtLabelTeam, 
+                y=y_, 
+                anchor=CENTER
             )
-        )
-        lbTeam02.place(
-            x=constants.xLenghtLabelTeam + 300, 
-            y=y_, 
-            anchor=CENTER
-        )
-        # ------------------------------------------------------
-        winner(result_team_1, result_team_2)
+            # ------------------------------------------------------
+            # ------------------------------------------------------
+            # X
+            # ------------------------------------------------------
+            lbTeam02 = Label(
+                TelaInicial, 
+                width=10, 
+                text=constants.stringXPlacar, 
+                bg=constants.backgroundColor,
+                fg=constants.letterColor
+            )    
+            lbTeam02.config(
+                font=(
+                    constants.fontPersonalizadaPlacar, 
+                    constants.fontSizePlacar
+                )
+            )
+            lbTeam02.place(
+                x=constants.xLenghtLabelTeam + 150, 
+                y=y_, 
+                anchor=CENTER
+            )
+            # ------------------------------------------------------
+            # ------------------------------------------------------
+            # Label Team 02 - RESULT
+            # ------------------------------------------------------
+            lbTeam02 = Label(
+                TelaInicial, 
+                width=constants.widthLabelTeam, 
+                text=result_team_2, 
+                bg=constants.backgroundColor,
+                fg=constants.letterColor
+            )    
+            lbTeam02.config(
+                font=(
+                    constants.fontPersonalizadaPlacar, 
+                    constants.fontSizePlacar
+                )
+            )
+            lbTeam02.place(
+                x=constants.xLenghtLabelTeam + 300, 
+                y=y_, 
+                anchor=CENTER
+            )
+            # ------------------------------------------------------
+            winner(result_team_1, result_team_2)
+        else:
+            if (dictPartida["monitor"] == constants.btModoViewInactive):
+                popup("Ocorreu um erro no sistema ..\nVeja o placar no monitor!")
+            else:
+                popup("Ocorreu um erro no sistema ..\nReinicie a partida!")
 
     def change(id):
         # modo

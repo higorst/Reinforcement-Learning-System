@@ -14,7 +14,7 @@ def run(mode):
 	if (mode == constants.btModoViewActive):
 		input_ = "cd && rcssmonitor"
 		os.system(input_)
-		sleep(50)
+		sleep(5)
 		exit()
 	else:
 		pass

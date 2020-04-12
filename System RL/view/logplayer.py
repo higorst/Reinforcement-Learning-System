@@ -23,6 +23,22 @@ def view(TelaInicial):
     def popup(s):
         popup_.run(s, 2000)
 
+    def changeDir():
+        # reset listbox
+        itens_name = []
+        itens_show = []
+        for x in range(0, listbox.size()):
+            listbox.delete(listbox.size() - 1)
+
+        TelaInicial.directory = filedialog.askdirectory(
+            initialdir = constants.initialDirectory,
+            title = constants.titleAskDirectory
+        )
+
+        itens_name, itens_show = logs.run(TelaInicial.directory)
+        for item in itens_show:
+            listbox.insert(END, item)
+
     def start():
         line = listbox.curselection()
         if line == ():
@@ -41,6 +57,24 @@ def view(TelaInicial):
         background=constants.backgroundColor
     )
     # ------------------------------------------------------
+
+    # change directory
+    icon = PhotoImage(file = constants.addressRefresh)
+    bt = Button(
+        TelaInicial, 
+        width=30, 
+        image=icon, 
+        command=changeDir,
+        bg=constants.backgroundColor, 
+        fg=constants.letterColor,
+        activebackground=constants.activeButtonColor
+    )
+    bt.config(highlightbackground=constants.buttonHighLight)
+    bt.place(
+        x=10, 
+        y=10, 
+        anchor=NW
+    )
 
     # ------------------------------------------------------
     lb = Label(

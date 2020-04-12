@@ -12,7 +12,7 @@ from view import partida
 from view import aprendizado
 from view.ar import partida as partidaAR
 from view import logplayer
-from view import config
+from view import tutorial
 from view import about
 
 def router(id, TelaInicial, dict_ = None):
@@ -67,10 +67,10 @@ def router(id, TelaInicial, dict_ = None):
 		logplayer.view(TelaInicial)
 
     # ------------------------------------------------------
-	# Tela config
+	# Tela tutorial
     # ------------------------------------------------------
 	elif( id == 4 ):
-		config.view(TelaInicial)
+		tutorial.view(TelaInicial)
 
     # ------------------------------------------------------
 	# Tela sobre
