@@ -1,0 +1,770 @@
+/*
+Copyright (c) 2000-2003, Jelle Kok, University of Amsterdam
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+3. Neither the name of the University of Amsterdam nor the names of its
+contributors may be used to endorse or promote products derived from this
+software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+/*! \file PlayerTeams.cpp
+<pre>
+<b>File:</b>          PlayerTest.cpp
+<b>Project:</b>       Robocup Soccer Simulation Team: UvA Trilearn
+<b>Authors:</b>       Jelle Kok
+<b>Created:</b>       10/12/2000
+<b>Last Revision:</b> $ID$
+<b>Contents:</b>      This file contains the class definitions for the
+                      Player that are used to test the teams' high level
+                      strategy.
+<hr size=2>
+<h2><b>Changes</b></h2>
+<b>Date</b>             <b>Author</b>          <b>Comment</b>
+10/12/2000        Jelle Kok       Initial version created
+</pre>
+*/
+
+/*Modificado por: Andre Luiz C. Ottoni
+UaiSoccer2D - UFSJ
+27 de Janeiro de 2011*/ 
+
+#include "Player.h"
+#include "Objects.h"
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cstdlib>
+
+float q[18][6]; // matriz aprendizado
+float r[18][12]; // matriz reforço
+
+/*!This method is the first complete simple team and defines the actions taken
+   by all the players on the field (excluding the goalie). It is based on the
+   high-level actions taken by the simple team FC Portugal that it released in
+   2000. The players do the following:
+   - if ball is kickable
+       kick ball to goal (random corner of goal)
+   - else if i am fastest player to ball 
+       intercept the ball
+   - else
+       move to strategic position based on your home position and pos ball */
+int verificar_celula(float x, float y){
+
+   // Bloco A
+   if ( x < -36.0){ // verificar A1
+      if ( y <= -20.16 ){
+         return 1;
+      }
+   }
+   if ( x < -36.0){ // verificar A2
+      if ( y > -20.16 && y < 20.16 ){
+         return 2;
+      }
+   }
+   if ( x < -36.0){ // verificar A3
+      if ( y >= 20.16 ){
+         return 3;
+      }
+   }
+
+   // Bloco B
+   if ( x >= -36.0 && x < -25.0 ){ // verificar B4
+      if ( y <= -20.16 ){
+         return 4;
+      }
+   }
+   if ( x >= -36.0 && x < -25.0 ){ // verificar B5
+      if ( y > -20.16 && y < 20.16 ){
+         return 5;
+      }
+   }
+   if ( x >= -36.0 && x < -25.0 ){ // verificar B6
+      if ( y >= 20.16 ){
+         return 6;
+      }
+   }
+
+   // Bloco C
+   if ( x >= -25.0 && x < 0.0 ){ // verificar C7
+      if ( y <= -20.16 ){
+         return 7;
+      }
+   }
+   if ( x >= -25.0 && x < 0.0 ){ // verificar C8
+      if ( y > -20.16 && y < 20.16 ){
+         return 8;
+      }
+   }
+   if ( x >= -25.0 && x < 0.0 ){ // verificar C9
+      if ( y >= 20.16 ){
+         return 9;
+      }
+   }
+
+   // Bloco D
+   if ( x >= 0.0 && x < 25.0 ){ // verificar D10
+      if ( y <= -20.16 ){
+         return 10;
+      }
+   }
+   if ( x >= 0.0 && x < 25.0 ){ // verificar D11
+      if ( y > -20.16 && y < 20.16 ){
+         return 11;
+      }
+   }
+   if ( x >= 0.0 && x < 25.0 ){ // verificar D12
+      if ( y >= 20.16 ){
+         return 12;
+      }
+   }
+
+   // Bloco E
+   if ( x >= 25.0 && x < 36.0 ){ // verificar E13
+      if ( y <= -20.16 ){
+         return 13;
+      }
+   }
+   if ( x >= 25.0 && x < 36.0 ){ // verificar E14
+      if ( y > -20.16 && y < 20.16 ){
+         return 14;
+      }
+   }
+   if ( x >= 25.0 && x < 36.0 ){ // verificar E15
+      if ( y >= 20.16 ){
+         return 15;
+      }
+   }
+
+   // Bloco F
+   if ( x >= 36.0){ // verificar F16
+      if ( y <= -20.16 ){
+         return 16;
+      }
+   }
+   if ( x >= 36.0){ // verificar F17
+      if ( y > -20.16 && y < 20.16 ){
+         return 17;
+      }
+   }
+   if ( x >= 36.0){ // verificar F18
+      if ( y >= 20.16 ){
+         return 18;
+      }
+   }
+
+}
+
+void ler_matriz_arquivo(){	// Retorna uma matriz 18x6 lida do arquivo 	
+	
+	//int leitura[18][6];
+	
+	FILE *fp ;
+	fp = fopen("q.txt","r"); // Abre o arquivo somente para leitura
+	if(fp == NULL){
+		perror("Erro ao abrir o arquivo.\n");
+	}else{
+		//printf("Leitura do arquivo\n");
+		for(int i=0;i<18;i++){
+			for(int j=0;j<6;j++) {
+				fscanf(fp,"%f ", &q[i][j]);
+			}
+		}
+	}
+	fclose(fp);
+	
+	FILE *f ;
+	f = fopen("r.txt","r"); // Abre o arquivo somente para leitura
+	if(f == NULL){
+		perror("Erro ao abrir o arquivo.\n");
+	}else{
+		//printf("Leitura do arquivo\n");
+		for(int i=0;i<18;i++){
+			for(int j=0;j<12;j++) {
+				fscanf(f,"%f ", &r[i][j]);
+			}
+		}
+	}
+	fclose(f);
+}
+void escrever_arquivo(){ // Escreve no arquivo uma matriz 18x8 	
+	FILE *fp ;
+	fp = fopen("q.txt","w");
+
+	if(fp == NULL){
+		perror("Erro ao abrir o arquivo.\n");
+		return;
+	}else{
+		for(int i=0;i<18;i++){
+			for(int j=0;j<6;j++) {
+				fprintf(fp, "%.2f ", q[i][j]);	
+			}fprintf(fp, "\n");
+		}
+	}
+	fclose(fp);
+}
+void q_learning(float x, float y, int acao, int jogador){
+   // ------------------------------------- Q- learning 
+   int celula = verificar_celula(x, y); // Verifica qual célula o agente está
+   q[celula-1][acao] += r[celula-1][acao*2];
+   printf("x=%.2f y=%.2f - Jogador %d - Célula %d - Ação %d - Reforço %.2f - Aprendizado %.2f\n", x, y, jogador, celula, acao, r[celula-1][acao*2], q[celula-1][acao]);
+   escrever_arquivo();
+   // ------------------------------------- Q- learning
+}
+SoccerCommand Player::deMeer5(  )
+{
+  ler_matriz_arquivo();
+  SoccerCommand soc(CMD_ILLEGAL);
+  VecPosition   posAgent = WM->getAgentGlobalPosition();
+  VecPosition   posBall  = WM->getBallPos();
+  int           iTmp;
+
+  
+  if( WM->isBeforeKickOff( ) )
+  {
+    if( WM->isKickOffUs( ) && WM->getPlayerNumber() == 9 ) // 9 takes kick
+    {
+      if( WM->isBallKickable() )
+      { 
+        //Toca a bola para o 8 no inicio do jogo
+        VecPosition posAgent_passe8 = WM->getGlobalPosition(OBJECT_TEAMMATE_8);
+        soc = directPass(posAgent_passe8, PASS_NORMAL);
+        Log.log( 100, "take kick off" );        
+      }
+      else
+      {
+        soc = intercept( false );
+        Log.log( 100, "move to ball to take kick-off" );
+      }  
+      ACT->putCommandInQueue( soc );
+      ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+      return soc;
+    }  
+    if( formations->getFormation() != FT_INITIAL || // not in kickoff formation
+        posAgent.getDistanceTo( WM->getStrategicPosition() ) > 2.0 )  
+    {
+      formations->setFormation( FT_INITIAL );       // go to kick_off formation
+      ACT->putCommandInQueue( soc=teleportToPos( WM->getStrategicPosition() ));
+    }
+    else                                            // else turn to center
+    {
+      ACT->putCommandInQueue( soc=turnBodyToPoint( VecPosition( 0, 0 ), 0 ) );
+      ACT->putCommandInQueue( alignNeckWithBody( ) );
+    }
+  }
+  else
+  {
+    formations->setFormation( FT_DEFENSIVE );
+    soc.commandType = CMD_ILLEGAL;
+    if( WM->getConfidence( OBJECT_BALL ) < PS->getBallConfThr() )
+    {
+      ACT->putCommandInQueue( soc = searchBall() );   // if ball pos unknown
+      ACT->putCommandInQueue( alignNeckWithBody( ) ); // search for it
+    }
+    else if( WM->isBallKickable())                    // if kickable
+    {
+      //Declaracao de objetos de posiocionamento de jogadores 
+      VecPosition posGoal( PITCH_LENGTH/2.0,(-1 + 2*(WM->getCurrentCycle()%2)) * 0.4 * SS->getGoalWidth() );
+      VecPosition posAgent_passe6 = WM->getGlobalPosition(OBJECT_TEAMMATE_6);
+      VecPosition posAgent_passe7 = WM->getGlobalPosition(OBJECT_TEAMMATE_7);
+      VecPosition posAgent_passe8 = WM->getGlobalPosition(OBJECT_TEAMMATE_8);
+      VecPosition posAgent_passe9 = WM->getGlobalPosition(OBJECT_TEAMMATE_9);
+      VecPosition posAgent_passe10 = WM->getGlobalPosition(OBJECT_TEAMMATE_10);
+      VecPosition posAgent_passe11 = WM->getGlobalPosition(OBJECT_TEAMMATE_11);
+      
+      //Verifica o oponente mais rapido para a bola
+      int tempoAdv;
+      ObjectT Ladrao = WM->getFastestInSetTo(OBJECT_SET_OPPONENTS, OBJECT_BALL, &tempoAdv);
+      VecPosition posLadrao = WM->getGlobalPosition(Ladrao); 
+      //Calcula a distancia desse oponente, margem segura para posse bola
+      //Caso essa margem for pequena o jogador passa a bola ou chuta   
+      int dxl = posAgent.getX() - posLadrao.getX();
+      int dyl = posAgent.getY() - posLadrao.getY();
+      int distl = (int) sqrt(dxl*dxl + dyl*dyl); 
+      
+      //Escolhe qual o agente  
+      switch(WM->getPlayerNumber()){
+         case 2: 
+            //CHUTA A BOLA PARA O CAMPO OFENSIVO    
+            soc = clearBall(CLEAR_BALL_OFFENSIVE_SIDE, SIDE_ILLEGAL, NULL);        
+            break;
+         case 3: 
+            //CHUTA A BOLA PARA O CAMPO OFENSIVO
+            soc = clearBall(CLEAR_BALL_OFFENSIVE_SIDE, SIDE_ILLEGAL, NULL); 
+            break;
+         case 4:
+            //CHUTA A BOLA PARA O CAMPO OFENSIVO 
+            soc = clearBall(CLEAR_BALL_OFFENSIVE_SIDE, SIDE_ILLEGAL, NULL);   
+            break;
+         case 5: 
+	    //CHUTA A BOLA PARA O CAMPO OFENSIVO
+            soc = clearBall(CLEAR_BALL_OFFENSIVE_SIDE, SIDE_ILLEGAL, NULL);  
+            break;
+         case 6: 
+            if((distl>3)&&(posAgent.getY()<32)){//verifica a margem segura
+               if(posAgent.getX()<15){//posicao em X menor q 15
+                  soc = dribble(0, DRIBBLE_SLOW);//liga o drible no modo slow
+               }else{ 
+                    //se o agente estiver atras do jogador 10 
+                    if(posAgent.getX()<(posAgent_passe10.getX()-5)){
+                        soc = directPass(posAgent_passe10, PASS_FAST);//toca para o 10
+                        // ------------------------------------- Q- learning
+                        float x = posAgent.getX();
+                        float y = posAgent.getY();                        			
+                        int acao = 2; // a ação por equanto será a pré-definida pelo time base (4 linhas atrás - PASS_FAST - Tocar R - Coluna 3 (2)
+                        q_learning(x, y, acao, 6);
+                        // ------------------------------------- Q- learning
+                    }else{ if(posAgent.getX()<35){
+                              soc = dribble(0, DRIBBLE_SLOW);//liga o drible 
+                              // ------------------------------------- Q- learning
+                              float x = posAgent.getX();
+                              float y = posAgent.getY();                        
+                              int acao = 3; 
+			                     q_learning(x, y, acao, 6);
+                              // ------------------------------------- Q- learning
+                           }else{if(posAgent.getX()<posAgent_passe10.getX()-1){
+                                   soc = directPass(posAgent_passe10, PASS_FAST);
+                                   // ------------------------------------- Q- learning
+                                    float x = posAgent.getX();
+                                    float y = posAgent.getY();                        
+                                    int celula = verificar_celula(x, y);
+                                    int acao = 2; 
+				                        q_learning(x, y, acao, 6);
+                                    // ------------------------------------- Q- learning
+                                }else{
+                                   //chuta para o gol
+                                   soc = kickTo( posGoal, SS->getBallSpeedMax() );
+                                    // ------------------------------------- Q- learning
+                                    float x = posAgent.getX();
+                                    float y = posAgent.getY();
+                                    int acao = 1; 
+				                        q_learning(x, y, acao, 6);
+                                    // ------------------------------------- Q- learning
+                                }
+                           } 
+                    }
+               }
+           }else{//caso a margem nao seja segura ou lateral
+              //se o agente estiver atras do jogador 10
+              if(posAgent.getX()<(posAgent_passe10.getX()-1)){
+                 soc = directPass(posAgent_passe10, PASS_FAST);//toca para o 10
+              }else{
+                 if(posAgent.getX()<(posAgent_passe11.getX()-1)){
+                    soc = directPass(posAgent_passe11, PASS_FAST);//toca para o 11
+                 }else{//chuta para o campo ofensivo
+                     soc = clearBall(CLEAR_BALL_OFFENSIVE_SIDE, SIDE_ILLEGAL, NULL);
+                 } 
+              }
+           }
+            break;
+         case 7: 
+            if((distl>2)&&(posAgent.getY()<32)){//verifica a margem segura
+               if(posAgent.getX()<10){//posicao em x menor q 10
+                  soc = dribble(0, DRIBBLE_SLOW);//liga o drible
+                  // ------------------------------------- Q- learning
+                  float x = posAgent.getX();
+                  float y = posAgent.getY();
+                  int acao = 3;
+                  q_learning(x, y, acao, 6);
+                  // ------------------------------------- Q- learning
+               }else{ if(posAgent.getX()<20){
+                        soc = directPass(posAgent_passe10, PASS_FAST);//passe p 10
+                        // ------------------------------------- Q- learning
+                        float x = posAgent.getX();
+                        float y = posAgent.getY(); 
+                        int acao = 2; 
+                        q_learning(x, y, acao, 6);
+                        // ------------------------------------- Q- learning
+                      }else{
+						      soc = kickTo( posGoal, SS->getBallSpeedMax() ); //chuta p gol
+                        // ------------------------------------- Q- learning
+                        float x = posAgent.getX();
+                        float y = posAgent.getY();
+                        int acao = 1; 
+                        q_learning(x, y, acao, 6);
+                        // ------------------------------------- Q- learning
+                      }            
+               }
+            }else{
+              if(posAgent.getX()<30){//posicao em x menor que 30
+                 soc = directPass(posAgent_passe10, PASS_FAST);//passe p 10
+                 // ------------------------------------- Q- learning
+                  float x = posAgent.getX();
+                  float y = posAgent.getY();  
+                  int acao = 2; 
+                  q_learning(x, y, acao, 6);
+                  // ------------------------------------- Q- learning
+              }else{
+	               soc = kickTo( posGoal, SS->getBallSpeedMax() ); //chuta p gol
+                  // ------------------------------------- Q- learning
+                  float x = posAgent.getX();
+                  float y = posAgent.getY();    
+                  int acao = 1; 
+                  q_learning(x, y, acao, 6);
+                  // ------------------------------------- Q- learning
+              } 
+            }
+            break;
+         case 8:
+           if((distl>2)&&(posAgent.getY()>-32)){//verifica margem segura 
+               if(posAgent.getX()<10){//poosicao em x menor que 10
+                  soc = dribble(0, DRIBBLE_SLOW);
+               }else{ if(posAgent.getX()<20){
+                        soc = directPass(posAgent_passe11, PASS_NORMAL);//passe para 11
+                     }else{
+	                soc = kickTo( posGoal, SS->getBallSpeedMax() ); // chute para gol
+                     }            
+               }
+           }else{
+              if(posAgent.getX()<30){//posicao em x menor que 30
+                 soc = directPass(posAgent_passe11, PASS_FAST);//passe p 11
+              }else{
+	         soc = kickTo( posGoal, SS->getBallSpeedMax() ); //chuta p gol
+              } 
+           }
+            break;
+         case 9: 
+           if((distl>3)&&(posAgent.getY()>-32)){//verifica margem segura  
+              if(posAgent.getX()<15){//posicao em x menor q 15
+                  soc = dribble(0, DRIBBLE_SLOW);//liga o drible
+              }else{ if(posAgent.getX()<(posAgent_passe11.getX()-5)){
+                        soc = directPass(posAgent_passe11, PASS_FAST);//passe p 11
+                     }else{ if(posAgent.getX()<35){
+                              soc = dribble(0, DRIBBLE_SLOW); 
+                            }else{if(posAgent.getX()<posAgent_passe11.getX()-1){
+                                    soc = directPass(posAgent_passe11, PASS_FAST);
+                                  }else{
+                                     soc = kickTo( posGoal, SS->getBallSpeedMax() );//chuta
+                                  }
+                            } 
+                     }            
+               }
+           }else{
+              //verifica se esta atras do 11
+              if(posAgent.getX()<(posAgent_passe11.getX()-1)){
+                 soc = directPass(posAgent_passe11, PASS_FAST);
+              }else{//verifica se esta atras do 10
+                  if(posAgent.getX()<(posAgent_passe10.getX()-1)){
+                     soc = directPass(posAgent_passe10, PASS_FAST);
+                  }else{  
+                     //chuta a bola para o campo ofensivo 
+                     soc = clearBall(CLEAR_BALL_OFFENSIVE_SIDE, SIDE_ILLEGAL, NULL);
+                  } 
+              }
+           }
+            break;
+         case 10:
+           if((distl>2)&&(posAgent.getX()<20)&&(posAgent.getY()<32)){//verifica margem 	
+              if((posAgent.getX()<15)&&(posAgent.getX()<(posAgent_passe6.getX()-3))){
+                 soc = directPass(posAgent_passe6, PASS_FAST);//toca para o 6
+              }else{ if(posAgent.getX()<27){
+                       soc = dribble(0, DRIBBLE_FAST);//liga o drible
+                   }else{  	
+		       soc = kickTo( posGoal, SS->getBallSpeedMax() ); //chuta
+                   }
+              }
+           }else{
+              //verifiica se esta atras do 11
+              if(posAgent.getX()<(posAgent_passe11.getX()-2)){
+                 soc = directPass(posAgent_passe11, PASS_NORMAL);
+              }else{
+                 if((posAgent.getX()<27)&&(posAgent.getY()<32)){
+                       soc = dribble(0, DRIBBLE_FAST);
+                   }else{  	
+		       soc = kickTo( posGoal, SS->getBallSpeedMax() ); // chuta
+                 }
+              } 
+           }
+           break;
+         case 11:
+           if((distl>2)&&(posAgent.getX()<20)&&(posAgent.getY()>-32)){	
+              if((posAgent.getX()<15)&&(posAgent.getX()<(posAgent_passe9.getX()-3))){
+                 soc = directPass(posAgent_passe9, PASS_FAST);//toca para 0 9
+              }else{ if(posAgent.getX()<27){
+                       soc = dribble(0, DRIBBLE_FAST);//liga o drible
+                   }else{  	
+		       soc = kickTo( posGoal, SS->getBallSpeedMax() ); // chuta
+                   }
+              }
+           }else{
+              if(posAgent.getX()<(posAgent_passe10.getX()-2)){
+                 soc = directPass(posAgent_passe10, PASS_NORMAL);
+              }else{
+                 if((posAgent.getX()<27)&&(posAgent.getY()>-32)){
+                       soc = dribble(0, DRIBBLE_FAST);
+                   }else{  	
+		       soc = kickTo( posGoal, SS->getBallSpeedMax() ); // chuta
+                 }
+              } 
+           }
+            break;
+      }
+	
+      ACT->putCommandInQueue( soc );
+      ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );//retorna o conmando de girar o pescoco com angulo que fara para chutar para o gol
+      Log.log( 100, "kick ball" );
+    }
+    else if( WM->getFastestInSetTo( OBJECT_SET_TEAMMATES, OBJECT_BALL, &iTmp )
+              == WM->getAgentObjectType()  && !WM->isDeadBallThem() )
+    {                                                // if fastest to ball
+      Log.log( 100, "I am fastest to ball; can get there in %d cycles", iTmp );
+      soc = intercept( false );                      // intercept the ball
+
+      if( soc.commandType == CMD_DASH &&             // if stamina low
+          WM->getAgentStamina().getStamina() <
+             SS->getRecoverDecThr()*SS->getStaminaMax()+200 )
+      {
+        soc.dPower = 30.0 * WM->getAgentStamina().getRecovery(); // dash slow
+        ACT->putCommandInQueue( soc );
+        ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+      }
+      else                                           // if stamina high
+      {
+        ACT->putCommandInQueue( soc );               // dash as intended
+        ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+      }
+     }
+     else if( posAgent.getDistanceTo(WM->getStrategicPosition()) >
+                  1.5 + fabs(posAgent.getX()-posBall.getX())/10.0)
+                                                  // if not near strategic pos
+     {
+       if( WM->getAgentStamina().getStamina() >     // if stamina high
+                            SS->getRecoverDecThr()*SS->getStaminaMax()+800 )
+       {
+   VecPosition posAgent_1 = WM->getGlobalPosition(OBJECT_TEAMMATE_1); 
+   VecPosition posAgent_Op9 = WM->getGlobalPosition(OBJECT_OPPONENT_9);
+   VecPosition posAgent_Op10 = WM->getGlobalPosition(OBJECT_OPPONENT_10);
+   VecPosition posAgent_Op11 = WM->getGlobalPosition(OBJECT_OPPONENT_11);
+      int dx = posAgent.getX() - posAgent_1.getX();
+      int dy = posAgent.getY() - posAgent_1.getY();
+      int dist = (int) sqrt(dx*dx + dy*dy);                  
+      switch(WM->getPlayerNumber()){
+
+         case 4: 
+	    //    
+            //soc = mark(OBJECT_OPPONENT_11, 2, MARK_GOAL);
+   if((posBall.getX()<0)&&(posBall.getX()>-37)&&(posBall.getY()>-5)&&(posBall.getY()<5)){    
+               soc = intercept(NULL);
+            }else{
+               soc = moveToPos(WM->getStrategicPosition(),PS->getPlayerWhenToTurnAngle());
+            }
+            break;
+         case 5:   
+            if((posAgent_Op10.getX()<-15)&&(posAgent.getY()<-5)&&(dist>3)){
+              soc = mark(OBJECT_OPPONENT_10, 1, MARK_GOAL);
+            }else{
+               soc = moveToPos(WM->getStrategicPosition(),PS->getPlayerWhenToTurnAngle());
+            }
+            break;
+         case 3: 
+            if((posAgent_Op9.getX()<-15)&&(posAgent.getY()>-10)&&(posBall.getY()<10)&&(dist>3)){
+               soc = mark(OBJECT_OPPONENT_9, 1, MARK_GOAL);
+            }else{
+               soc = moveToPos(WM->getStrategicPosition(),PS->getPlayerWhenToTurnAngle());
+            }
+            break;
+         case 2: 
+            if((posAgent_Op11.getX()<-15)&&(posAgent.getY()>5)&&(dist>3)){
+               soc = mark(OBJECT_OPPONENT_11, 1, MARK_GOAL);
+            }else{
+               soc = moveToPos(WM->getStrategicPosition(),PS->getPlayerWhenToTurnAngle());
+            }
+            break;
+         default:
+            soc = moveToPos(WM->getStrategicPosition(),PS->getPlayerWhenToTurnAngle());
+            break;
+       } 
+       ACT->putCommandInQueue( soc );            // move to strategic pos
+       ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+       }
+       else                                        // else watch ball
+       {
+         ACT->putCommandInQueue( soc = turnBodyToObject( OBJECT_BALL ) );
+         ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+       }
+     }
+     else if( fabs( WM->getRelativeAngle( OBJECT_BALL ) ) > 1.0 ) // watch ball
+     {
+       ACT->putCommandInQueue( soc = turnBodyToObject( OBJECT_BALL ) );
+       ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+     }
+     else                                         // nothing to do
+       ACT->putCommandInQueue( SoccerCommand(CMD_TURNNECK,0.0) );
+   }
+  return soc;
+}
+
+/*!This method is a simple goalie based on the goalie of the simple Team of
+   FC Portugal. It defines a rectangle in its penalty area and moves to the
+   position on this rectangle where the ball intersects if you make a line
+   between the ball position and the center of the goal. If the ball can
+   be intercepted in the own penalty area the ball is intercepted and catched.
+*/
+SoccerCommand Player::deMeer5_goalie(  )
+{
+  int i;
+
+  SoccerCommand soc;
+  VecPosition   posAgent = WM->getAgentGlobalPosition();
+  AngDeg        angBody  = WM->getAgentGlobalBodyAngle();
+
+  // define the top and bottom position of a rectangle in which keeper moves
+  static const VecPosition posLeftTop( -PITCH_LENGTH/2.0 +
+               0.7*PENALTY_AREA_LENGTH, -PENALTY_AREA_WIDTH/4.0 );
+  static const VecPosition posRightTop( -PITCH_LENGTH/2.0 +
+               0.7*PENALTY_AREA_LENGTH, +PENALTY_AREA_WIDTH/4.0 );
+
+  // define the borders of this rectangle using the two points.
+  static Line  lineFront = Line::makeLineFromTwoPoints(posLeftTop,posRightTop);
+  static Line  lineLeft  = Line::makeLineFromTwoPoints(
+                         VecPosition( -50.0, posLeftTop.getY()), posLeftTop );
+  static Line  lineRight = Line::makeLineFromTwoPoints(
+                         VecPosition( -50.0, posRightTop.getY()),posRightTop );
+
+
+  if( WM->isBeforeKickOff( ) )
+  {
+    if( formations->getFormation() != FT_INITIAL || // not in kickoff formation
+        posAgent.getDistanceTo( WM->getStrategicPosition() ) > 2.0 )  
+    {
+      formations->setFormation( FT_INITIAL );       // go to kick_off formation
+      ACT->putCommandInQueue( soc=teleportToPos(WM->getStrategicPosition()) );
+    }
+    else                                            // else turn to center
+    {
+      ACT->putCommandInQueue( soc = turnBodyToPoint( VecPosition( 0, 0 ), 0 ));
+      ACT->putCommandInQueue( alignNeckWithBody( ) );
+    }
+    return soc;
+  }
+
+  if( WM->getConfidence( OBJECT_BALL ) < PS->getBallConfThr() )
+  {                                                // confidence ball too  low
+    ACT->putCommandInQueue( searchBall() );        // search ball
+    ACT->putCommandInQueue( alignNeckWithBody( ) );
+  }
+  else if( WM->getPlayMode() == PM_PLAY_ON || WM->isFreeKickThem() ||
+           WM->isCornerKickThem() )               
+  {
+    if( WM->isBallCatchable() )
+    {
+      ACT->putCommandInQueue( soc = catchBall() );
+      ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+    }
+     else if( WM->isBallKickable() )
+    {
+       //soc = kickTo( VecPosition(0,posAgent.getY()*2.0), 2.0 );
+       soc = clearBall(CLEAR_BALL_DEFENSIVE, SIDE_ILLEGAL, NULL);     
+       ACT->putCommandInQueue( soc );
+       ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+    }
+    else if( WM->isInOwnPenaltyArea( getInterceptionPointBall( &i, true ) ) &&
+             WM->getFastestInSetTo( OBJECT_SET_PLAYERS, OBJECT_BALL, &i ) == 
+                                               WM->getAgentObjectType() )
+    {
+      ACT->putCommandInQueue( soc = intercept( true ) );
+      ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+    }
+    else
+    {
+      // make line between own goal and the ball
+      VecPosition posMyGoal = ( WM->getSide() == SIDE_LEFT )
+             ? SoccerTypes::getGlobalPositionFlag(OBJECT_GOAL_L, SIDE_LEFT )
+             : SoccerTypes::getGlobalPositionFlag(OBJECT_GOAL_R, SIDE_RIGHT);
+      Line lineBall = Line::makeLineFromTwoPoints( WM->getBallPos(),posMyGoal);
+
+      // determine where your front line intersects with the line from ball
+      VecPosition posIntersect = lineFront.getIntersection( lineBall );
+
+      // outside rectangle, use line at side to get intersection
+      if (posIntersect.isRightOf( posRightTop ) )
+        posIntersect = lineRight.getIntersection( lineBall );
+      else if (posIntersect.isLeftOf( posLeftTop )  )
+        posIntersect = lineLeft.getIntersection( lineBall );
+
+      if( posIntersect.getX() < -49.0 )
+        posIntersect.setX( -49.0 );
+        
+      // and move to this position
+      if( posIntersect.getDistanceTo( WM->getAgentGlobalPosition() ) > 0.5 )
+      {
+        soc = moveToPos( posIntersect, PS->getPlayerWhenToTurnAngle() );
+        ACT->putCommandInQueue( soc );
+        ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+      }
+      else
+      {
+        ACT->putCommandInQueue( soc = turnBodyToObject( OBJECT_BALL ) );
+        ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+      }
+    }
+  }
+  else if( WM->isFreeKickUs() == true || WM->isGoalKickUs() == true )
+  {
+    if( WM->isBallKickable() )
+    {
+      if( WM->getTimeSinceLastCatch() == 25 && WM->isFreeKickUs() )
+      {
+        // move to position with lesser opponents.
+        if( WM->getNrInSetInCircle( OBJECT_SET_OPPONENTS, 
+                                          Circle(posRightTop, 15.0 )) <
+            WM->getNrInSetInCircle( OBJECT_SET_OPPONENTS, 
+                                           Circle(posLeftTop,  15.0 )) )
+          soc.makeCommand( CMD_MOVE,posRightTop.getX(),posRightTop.getY(),0.0);
+        else
+          soc.makeCommand( CMD_MOVE,posLeftTop.getX(), posLeftTop.getY(), 0.0);
+        ACT->putCommandInQueue( soc );
+      }
+      else if( WM->getTimeSinceLastCatch() > 28 )
+      {
+        //soc = kickTo( VecPosition(0,posAgent.getY()*2.0), 2.0 );
+        soc = clearBall(CLEAR_BALL_DEFENSIVE, SIDE_ILLEGAL, NULL);     
+        ACT->putCommandInQueue( soc );
+      }
+      else if( WM->getTimeSinceLastCatch() < 25 )
+      {
+        VecPosition posSide( 0.0, posAgent.getY() ); 
+        if( fabs( (posSide - posAgent).getDirection() - angBody) > 10 )
+        {
+          soc = turnBodyToPoint( posSide );
+          ACT->putCommandInQueue( soc );
+        }
+        ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+      }
+    }
+    else if( WM->isGoalKickUs()  )
+    {
+      ACT->putCommandInQueue( soc = intercept( true ) );
+      ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+    }
+    else
+      ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+  }
+  else
+  {
+     ACT->putCommandInQueue( soc = turnBodyToObject( OBJECT_BALL ) );
+     ACT->putCommandInQueue( turnNeckToObject( OBJECT_BALL, soc ) );
+  }
+  return soc;
+}
+

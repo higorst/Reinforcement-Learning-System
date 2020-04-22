@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=System RL
+Comment=Sistema de Aprendizado por Reforço para o Futebol de Robôs - Categoria de Simulação 2D
+Exec=python3 /home/ufrbots/.System\ RL/TelaInicial.py
+Icon=/home/ufrbots/.System RL/img/logo.png
+Terminal=false
+Type=Application
+Categories=GNOME;Application;Development;
+StartupNotify=true

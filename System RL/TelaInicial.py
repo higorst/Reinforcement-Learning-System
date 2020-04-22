@@ -3,6 +3,9 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import ImageTk, Image
 
+import os
+import subprocess
+
 import constants.constants as constants
 from view import Router
 
@@ -16,6 +19,39 @@ def TelaInicial(TelaInicial):
     # ------------------------------------------------------
     # Definições da view
     if (TelaInicial == None):
+        input_ = "who"
+        var = subprocess.getoutput(input_)
+        var = var.split()
+        user_name = var[0]
+        # -----------------------------------------
+        # Configurar .desktop
+        # -----------------------------------------
+        addressFileDesktop = "/home/" + user_name + "/.System RL/System RL.desktop"
+        path = addressFileDesktop
+        file_ = open(path, 'r')
+
+        new = ''
+        for line in file_:
+            l = line
+            if "Exec=" in l:
+                l = "Exec=" + str(constants.commandExec) + "\n"
+            elif "Icon=" in l:
+                l = "Icon=" + str(constants.commandIcon) + "\n"
+            new += l
+
+        file_.close()
+        
+        f_ = open(path, 'w')
+        f_.write(new)
+        f_.close()
+
+        # Mover file desktop
+        input_ = "cd && cp -r /home/" + user_name + "/.System\ RL/System\ RL.desktop /usr/share/applications/"
+        var = subprocess.getoutput(input_)
+        # input_ = "cd && cp -r /usr/share/applications/System\ RL.desktop /home/" + user_name + "/Desktop/"
+        # var = subprocess.getoutput(input_)
+
+        # construir tela
         TelaInicial = Tk()
         TelaInicial.geometry(constants.viewSize)
         TelaInicial.resizable(0,0)

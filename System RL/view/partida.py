@@ -240,7 +240,7 @@ def view(TelaInicial):
         wait()
         changeButtonStop()
         result_team_1, result_team_2 = placar.run()
-        if (result_team_1 != '999' and result_team_2 != '999'):
+        if (result_team_1 != constants.ERROR and result_team_2 != constants.ERROR):
             # set result to msg winner
             y_ = 250
             # ------------------------------------------------------
@@ -333,10 +333,11 @@ def view(TelaInicial):
             # ------------------------------------------------------
             winner(result_team_1, result_team_2)
         else:
-            if (dictPartida["monitor"] == constants.btModoViewInactive):
+            if (dictPartida["monitor"] == constants.btModoViewActive):
                 popup("Ocorreu um erro no sistema ..\nVeja o placar no monitor!")
             else:
-                popup("Ocorreu um erro no sistema ..\nReinicie a partida!")
+                popup("Ocorreu um erro no sistema ..\nReiniciando partida!")
+                start()
 
     def change(id):
         # modo

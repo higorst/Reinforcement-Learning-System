@@ -11,19 +11,19 @@ import constants.constants as constants
 def run(dict_config, op):
 
 	def sucess():
-		msg = 'Sucesso'
+		msg = constants.msgSucess
 		popup_.run(msg, 1000)
 
 	def setParamsPopup():
-		msg = 'Verificando parâmetros ...\n'
+		msg = constants.msgSetParms
 		popup_.run(msg, 2000)
 		if int(dict_config["matriz"]) == 2:
-			msg = 'Criando Matriz'
+			msg = constants.msgCriarMatriz
 			popup_.run(msg, 2000)
 
 	def setParams():
 		# SETAR CONFIGURAÇÕES PARA TIME AR_SYSTEM
-		path = '/home/ufrbots/Documents/AR_System/src/PlayerTeams.cpp'
+		path = constants.addressFilePlayerTeams
 		file = open(path, 'r')
 
 		new = ''
@@ -44,7 +44,7 @@ def run(dict_config, op):
 		f.close()
 		# SETAR MATRIZ
 		if int(dict_config["matriz"]) == 2:
-			path = '/home/ufrbots/Documents/AR_System/q.txt'
+			path = constants.addressFileMatriz
 			f_ = open(path, 'w')
 			for i in range(0,32):
 				for j in range(0,6):
@@ -55,8 +55,8 @@ def run(dict_config, op):
 			f_.close()
 
 	def configPopup():
-		msg = 'Configurando Time de Aprendizado!\nAguarde ..'
-		popup_.run(msg, 22000)
+		msg = constants.msgConfigTeam
+		popup_.run(msg, 6000)
 
 	def config():
 		# -----------
@@ -72,19 +72,19 @@ def run(dict_config, op):
 		var = subprocess.getoutput(input_)
 		pass	
 
-	if op == 1:
-		threading.Thread(target=setParamsPopup).start()
-		t1 = threading.Thread(target=setParams)
-		t1.start()
-		while t1.isAlive():
-			sleep(1)
+	# if op == 1:
+	# 	threading.Thread(target=setParamsPopup).start()
+	# 	t1 = threading.Thread(target=setParams)
+	# 	t1.start()
+	# 	while t1.isAlive():
+	# 		sleep(1)
 
-	else:
-		threading.Thread(target=configPopup).start()
-		t2 = threading.Thread(target=config)
-		t2.start()
-		while t2.isAlive():
-			sleep(1)
-		threading.Thread(target=sucess).start()
+	# else:
+	# 	threading.Thread(target=configPopup).start()
+	# 	t2 = threading.Thread(target=config)
+	# 	t2.start()
+	# 	while t2.isAlive():
+	# 		sleep(1)
+	# 	threading.Thread(target=sucess).start()
 
 	return True

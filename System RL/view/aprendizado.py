@@ -50,8 +50,11 @@ def view(TelaInicial):
 
             dict_config["alpha"] = alpha.get()
             dict_config["gamma"] = gamma.get()
-            dict_config["epsilon"] = epsilon.get()
-            dict_config["algorithm"] = var_algorithm.get()
+            dict_config["epsilon"] = epsilon.get()  
+            if int(var_algorithm.get()) == 1:
+                dict_config["algorithm"] = 'Q_Learning'
+            else:
+                dict_config["algorithm"] = 'Sarsa'
             dict_config["episodes"] = episodes.get()
             dict_config["matriz"] = var_matriz.get()
             

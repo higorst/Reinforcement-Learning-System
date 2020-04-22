@@ -9,6 +9,9 @@ import math
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 
+from pandas import DataFrame
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 import random
 
 import constants.constants as constants
@@ -19,6 +22,8 @@ from view.code import home
 from view.code import getPlacar as placar
 
 from view.code.aprendizado import start as start_
+
+from view.code import graph
 
 import info as Info
 
@@ -42,27 +47,40 @@ def view(TelaInicial, dict_config):
         pass
 
     def openFile():
+    	# placares gerais AR x RESERVA
         arq_results = open('.results.txt', 'w');
         arq_results.write('Placares das Partidas \n(AR) x (Reserva)\n\n')
         for x in range(0, len(results_r1)):
             arq_results.write(str(results_r1[x]) + ' x ' + str(results_r2[x]) + '\n')
         arq_results.close()
 
-        input_ = 'gedit .results.txt'
+        
+
+        # Resultados apenas AR
+        arq_results = open('.ResultadosAR.txt', 'w');
+        # arq_results.write('Resultados -> (AR)\n\n')
+        for x in range(0, len(results_r1)):
+            arq_results.write(str(results_r1[x]) + '\n')
+        arq_results.close()
+
+        
+
+        # Resultados apenas RESERVA
+        arq_results = open('.ResultadosReserva.txt', 'w');
+        # arq_results.write('Resultados -> (Reserva)\n\n')
+        for x in range(0, len(results_r2)):
+            arq_results.write(str(results_r2[x]) + '\n')
+        arq_results.close()
+
+        input_ = 'gedit .results.txt .ResultadosAR.txt .ResultadosReserva.txt'
         os.system(input_)
+
+    def openGraph():
+        graph.open(graph_x, results_r1, results_r2, results_saldo)
 
     def results():
         threading.Thread(target=openFile).start()
-        plt.plot(graph_x, results_r1, 'go-', label=constants.labelGRAPH_AR, linewidth=1, linestyle='dashed')
-        plt.plot(graph_x, results_r2, 'bo-', label=constants.labelGRAPH_Res, linewidth=1, linestyle='dashed')
-        plt.plot(graph_x, results_saldo, 'ro-', label=constants.labelGRAPH_Saldo, linewidth=1, linestyle='dashed')
-        plt.legend(
-            loc='upper center', 
-            bbox_to_anchor=(0.5, -0.02), 
-            fancybox=True, 
-            shadow=True, 
-            ncol=3)
-        plt.show()
+        openGraph()
 
     def verify():
         if dict_config["started"] and int(dict_config["episode"]) <= int(dict_config["episodes"]):
@@ -87,47 +105,14 @@ def view(TelaInicial, dict_config):
                 anchor=CENTER
             )
             # ------------------------------------------------------
-            lb = Label(
-                TelaInicial, 
-                text="                                              ", 
-                bg=constants.backgroundColor,
-                fg=constants.letterColor
-            )
-            lb.config(
-                font=(
-                    constants.fontPersonalizada, 
-                    constants.fontSizeTitleTelaIn
-                )
-            )
-            lb.place(
-                x=410, 
-                y=20,
-                anchor=N
-            )
-            # ------------------------------------------------------
 
     def start():
         if not dict_config["started"]:
+            # results_r1.clear()
+            # results_r2.clear()
+            # results_saldo.clear()
+            # graph_x.clear()
             dict_config["started"] = True
-            # ------------------------------------------------------
-            lb = Label(
-                TelaInicial, 
-                text=constants.labelLearning, 
-                bg=constants.backgroundColor,
-                fg=constants.letterColor
-            )
-            lb.config(
-                font=(
-                    constants.fontPersonalizada, 
-                    constants.fontSizeTitleTelaIn
-                )
-            )
-            lb.place(
-                x=410, 
-                y=20,
-                anchor=N
-            )
-            # ------------------------------------------------------
             # ------------------------------------------------------
             # Button Start
             # ------------------------------------------------------
@@ -145,50 +130,55 @@ def view(TelaInicial, dict_config):
                 y=579, 
                 anchor=CENTER
             )
-        elif True:
-            dicTeam = {
-                "partida" : constants.btModoMatchFast,
-                "team1" : {
-                    "teamName" : "AR",
-                    "path" : '/home/ufrbots/Documents/AR_System'
-                },
-                "team2" : {
-                    "teamName" : "Reserva",
-                    "path" : '/home/ufrbots/Documents/Reserva_AR_Sytem/'
+        else:
+            while(dict_config["started"] and int(dict_config["episode"]) <= int(dict_config["episodes"])):
+                dicTeam = {
+                    "partida" : constants.btModoMatchFast,
+                    "team1" : {
+                        "teamName" : constants.addressTeamArName,
+                        "path" : constants.addressTeamArSystem
+                    },
+                    "team2" : {
+                        "teamName" : constants.addressTeamResName,
+                        "path" : constants.addressTeamResSystem
+                    }
                 }
-            }
-            countMatch(dict_config["episode"])
-            TelaInicial.update_idletasks()
+                countMatch(dict_config["episode"])
+                TelaInicial.update_idletasks()
 
-            r1, r2 = start_.run(dicTeam)
-            if r1 != constants.ERROR and r2 != constants.ERROR:
-                results_r1.append(int(r1))
-                results_r2.append(int(r2))
-                results_saldo.append(int(r1)-int(r2))
-                graph_x.append(int(dict_config["episode"]))
-                progress_bar.set(int(dict_config["episode"]))
+                r1, r2 = start_.run(dicTeam)
+                if r1 != constants.ERROR and r2 != constants.ERROR:
 
-                ep = str(dict_config["episode"])
-                r1 = str(r1)
-                r2 = str(r2)
+                    results_r1.append(int(r1))
+                    results_r2.append(int(r2))
+                    results_saldo.append(int(r1)-int(r2))
+                    graph_x.append(int(dict_config["episode"]))
 
-                while len(ep) < 3:
-                    ep += ' '
-                while len(r1) < 2:
-                    r1 += ' '
-                while len(r2) < 2:
-                    r2 += ' '
+                    graphLive()
+                    progress_bar.set(int(dict_config["episode"]))
 
-                listbox_1.insert(END, " Partida " + ep)
-                listbox_2.insert(END, r1)
-                listbox_3.insert(END, r2)
+                    ep = str(dict_config["episode"])
+                    r1 = str(r1)
+                    r2 = str(r2)
 
-                listbox_1.see(listbox_1.size())
-                listbox_2.see(listbox_2.size())
-                listbox_3.see(listbox_3.size())
-                dict_config["episode"] += 1
-            else:
-                popup_.run("Ocorreu um erro e a partida precisa ser reiniciada!", 2000)
+                    while len(ep) < 3:
+                        ep += ' '
+                    while len(r1) < 2:
+                        r1 += ' '
+                    while len(r2) < 2:
+                        r2 += ' '
+
+                    listbox_1.insert(END, " Partida " + ep)
+                    listbox_2.insert(END, r1)
+                    listbox_3.insert(END, r2)
+
+                    listbox_1.see(listbox_1.size())
+                    listbox_2.see(listbox_2.size())
+                    listbox_3.see(listbox_3.size())
+                    dict_config["episode"] += 1
+                else:
+                    popup_.run(constants.msgReiniciarPartida, 2000)
+                TelaInicial.update_idletasks()
 
         TelaInicial.update_idletasks()
         TelaInicial.after_idle(verify())
@@ -213,10 +203,40 @@ def view(TelaInicial, dict_config):
         )
         lbPartida.place(
             x=410, 
-            y=400,
+            y=20,
             anchor=N
         )
         # ------------------------------------------------------
+
+    def graphLive():
+        data1 = {'Partida': graph_x,
+                 'Saldo_de_Gol': results_saldo
+                }
+        df1 = DataFrame(data1,columns=['Partida','Saldo_de_Gol'])
+        df2 = df1[['Partida','Saldo_de_Gol']].groupby('Partida').sum()
+        df2.plot(kind='line', legend=False, ax=ax2, color='r',marker='o', linewidth=1, linestyle='dashed')
+
+        figure2.canvas.draw()
+        figure2.canvas.flush_events()
+
+    data1 = {'Partida': graph_x,
+             'Saldo_de_Gol': results_saldo
+            }
+    df1 = DataFrame(data1,columns=['Partida','Saldo_de_Gol'])
+
+    figure2 = plt.Figure(figsize=(19,4), dpi=50, facecolor='white', edgecolor='white')
+    ax2 = figure2.add_subplot(111)
+    line2 = FigureCanvasTkAgg(figure2, TelaInicial)
+    line2.get_tk_widget().place(
+        x=390, 
+        y=370,
+        anchor=N
+    )
+    df2 = df1[['Partida','Saldo_de_Gol']].groupby('Partida').sum()
+    # df2.plot(kind='line', legend=False, ax=ax2, color='w',marker='', linewidth=0, linestyle='dashed')
+    ax2.tick_params(top='off', bottom='off', left='off', right='off', labelright=True)
+    ax2.set_title('Saldo de Gols')
+    ax2.set_xlabel('')
 
     # AR x Reserva
     Label(
@@ -341,13 +361,13 @@ def view(TelaInicial, dict_config):
     barra = ttk.Progressbar(
         TelaInicial, 
         style="bar.Horizontal.TProgressbar",
-        length=700,
+        length=744,
         variable=progress_bar, 
         orient="horizontal", 
         maximum=int(dict_config["episodes"]),
     )
     barra.place(
-        x=400, 
+        x=402, 
         y=350,
         anchor=N
     )
