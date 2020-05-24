@@ -21,7 +21,7 @@ def run(dicTeam):
 		team2.run(dicTeam["team2"])     
 
 	def monitor_():
-		monitor.run(dicTeam["monitor"])
+		monitor.run(dicTeam["monitor"], 1)
 
 	input_ = "cd && rm -r /home/ufrbots/.log && mkdir /home/ufrbots/.log"
 	var = subprocess.getoutput(input_)

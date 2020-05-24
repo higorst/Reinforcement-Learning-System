@@ -2,6 +2,8 @@
 import os
 import subprocess
 
+from view import popup as popup_
+import threading
 from time import sleep 
 import os, glob            
 import constants.constants as constants  

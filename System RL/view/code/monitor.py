@@ -7,14 +7,16 @@ from sys import exit
 import os                  
 import constants.constants as constants          
 
-def run(mode):
+def run(mode, partida=None):
 	# ----------------------
 	# (1) - iniciar monitor
 	# ----------------------
 	if (mode == constants.btModoViewActive):
-		input_ = "cd && rcssmonitor"
-		os.system(input_)
-		sleep(5)
-		exit()
+		if partida == 1:
+			input_ = "cd && rcssmonitor"
+			os.system(input_)
+		else:
+			input_ = "cd && rcssmonitor --auto-reconnect-mode on"
+			os.system(input_)
 	else:
 		pass

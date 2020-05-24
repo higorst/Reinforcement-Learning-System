@@ -181,7 +181,7 @@ def view(TelaInicial):
     )
     btMenu.place(
         x=402, 
-        y=579, 
+        y=581, 
         anchor=CENTER
     )
 

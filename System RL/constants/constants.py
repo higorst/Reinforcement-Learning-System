@@ -11,9 +11,15 @@ user_name = var[0]
 # --------------------------------------------------------------
 
 # --------------------------------------------------------------
+# Banco de Dados
+# --------------------------------------------------------------
+addressBD 				= "/home/" + user_name + "/.aprendizado.db" 
+
+# --------------------------------------------------------------
 # Colors
 # --------------------------------------------------------------
 backgroundColor 		= "#fff"
+backgroundColorPopup	= "#99c2ff"
 backgroundColorInfo		= "#42a5f5"
 butonColor 				= "#fff"
 butonColorInfo 			= "#42a5f5"
@@ -106,8 +112,8 @@ btAfterAR				= "Iniciar"
 btAfterAguarde			= "Aguarde"
 btBeforeAR				= "Resultados"
 
-labelGRAPH_AR			= "Gols AR"
-labelGRAPH_Res			= "Gols Reserva"
+labelGRAPH_AR			= "Gols Feitos"
+labelGRAPH_Res			= "Gols Sofridos"
 labelGRAPH_Saldo		= "Saldo de Gols"
 
 infoLogplayer			= "Selecione uma opção e clique em \"Assistir\"\nFeche o monitor logplayer para acessar o sistema novamente!"
@@ -117,14 +123,14 @@ titleLogplayer			= "Monitor de Partidas AR"
 # --------------------------------------------------------------
 # Popup
 # --------------------------------------------------------------
-titlePopup				= "INFO"
+titlePopup				= ""
 infoEpisodes			= "Número total de partidas\n** Deve ser nº inteiro"
 infoAlpha				= "Taxa de aprendizado\n** Deve ser nº entre 0 - 1"
 infoGamma				= "Fator de desconto\n** Deve ser nº entre 0 - 1"
 infoEpsilon				= "Aleatoriedade na escola das ações. Ex: 0.1 -> 10%\n** Deve ser nº entre 0 - 1"
 infoAlgorithm			= "Algoritmo de aprendizado por reforço\n** Apenas o Q_Learning está disponível"
 infoMatriz				= "Matriz Q de aprendizado"
-sizePopup				= "400x50+500+300"
+sizePopup				= "400x70"
 
 # --------------------------------------------------------------
 # Address
@@ -141,7 +147,7 @@ commandIcon				= "/home/" + user_name + "/.System\ RL/img/logo.png"
 
 addressTeamArSystem		= "/home/" + user_name + "/Documents/AR_System"
 addressTeamArName		= "AR"
-addressTeamResSystem	= "/home/" + user_name + "/Documents/Reserva_AR_System/"
+addressTeamResSystem	= "/home/" + user_name + "/Documents/Reserva_AR_System"
 addressTeamResName		= "Reserva"
 
 addressLogo 			= "/home/" + user_name + "/.System RL/img/logo.png"
@@ -171,6 +177,7 @@ addressHour				= "/home/" + user_name + "/.System RL/img/hour.png"
 addressScoreboard		= "/home/" + user_name + "/.System RL/img/scoreboard.png"
 
 addressPlay				= "/home/" + user_name + "/.System RL/img/play.png"
+addressDados			= "/home/" + user_name + "/.System RL/img/dados.png"
 addressMovie01			= "/home/" + user_name + "/.System\ RL/movie/video01.mp4"
 addressMovie02			= "/home/" + user_name + "/.System\ RL/movie/video02.mp4"
 addressMovie03			= "/home/" + user_name + "/.System\ RL/movie/video03.mp4"
@@ -182,7 +189,7 @@ addressMovie03Time		= 21
 # --------------------------------------------------------------
 # Config
 # --------------------------------------------------------------
-viewSize				= "800x600+300+50"
+viewSize				= "800x600"
 fontPersonalizada 		= "Ubuntu"
 fontPersonalizadaTeam	= "Purisa"
 fontPersonalizadaPlacar = "DS-Digital"

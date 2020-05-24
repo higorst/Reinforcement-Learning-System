@@ -9,8 +9,10 @@ import TelaInicial as telaInicial
 import os
 
 from view import partida
-from view import aprendizado
-from view.ar import partida as partidaAR
+from view import ar
+from view import parametros
+from view import dados
+from view import partidasAR
 from view import logplayer
 from view import tutorial
 from view import about
@@ -25,7 +27,7 @@ def router(id, TelaInicial, dict_ = None):
 	# Rotina para sair do sistema
 	if( id == 999 ):
 		# Apga diretórios __pycache__
-		input_ = "rm -r /home/ufrbots/.log && mkdir /home/ufrbots/.log && rm -r /home/ufrbots/.System\ RL/__pycache__ && rm -r /home/ufrbots/.System\ RL/constants/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/code/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/code/aprendizado/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/ar/__pycache__ && exit"
+		input_ = "rm -r /home/ufrbots/.log && mkdir /home/ufrbots/.log && rm -r /home/ufrbots/.System\ RL/__pycache__ && rm -r /home/ufrbots/.System\ RL/constants/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/code/__pycache__ && rm -r /home/ufrbots/.System\ RL/view/code/aprendizado/__pycache__ && exit"
 		os.system(input_)
 
 		# Finaliza programa
@@ -52,13 +54,25 @@ def router(id, TelaInicial, dict_ = None):
 	# Tela AR
     # ------------------------------------------------------
 	elif( id == 2 ):
-		aprendizado.view(TelaInicial)
+		ar.view(TelaInicial)
+
+	# ------------------------------------------------------
+	# Tela AR - Parâmetros
+    # ------------------------------------------------------
+	elif( id == 21 ):
+		parametros.view(TelaInicial, dict_)
 
 	# ------------------------------------------------------
 	# Tela AR - Partida
     # ------------------------------------------------------
-	elif( id == 21 ):
-		partidaAR.view(TelaInicial, dict_)
+	elif( id == 22 ):
+		partidasAR.view(TelaInicial, dict_)
+
+	# ------------------------------------------------------
+	# Tela AR - Dados
+    # ------------------------------------------------------
+	elif( id == 23 ):
+		dados.view(TelaInicial, dict_)
 
     # ------------------------------------------------------
 	# Tela logplayer

@@ -7,7 +7,9 @@ import os
 import subprocess
 
 import constants.constants as constants
+from view.bd import modelagem
 from view import Router
+from view import popup as popup_
 
 def TelaInicial(TelaInicial):
 
@@ -15,6 +17,9 @@ def TelaInicial(TelaInicial):
     def router(id):        
         Router.router(id, TelaInicial)
     # ------------------------------------------------------
+
+    def popup(s):
+        popup_.run(s)
 
     # ------------------------------------------------------
     # Definições da view
@@ -50,11 +55,15 @@ def TelaInicial(TelaInicial):
         var = subprocess.getoutput(input_)
         # input_ = "cd && cp -r /usr/share/applications/System\ RL.desktop /home/" + user_name + "/Desktop/"
         # var = subprocess.getoutput(input_)
-
-        # construir tela
-        TelaInicial = Tk()
-        TelaInicial.geometry(constants.viewSize)
-        TelaInicial.resizable(0,0)
+        if modelagem.run():
+            # construir tela
+            TelaInicial = Tk()
+            windowWidth = TelaInicial.winfo_reqwidth()
+            windowHeight = TelaInicial.winfo_reqheight()
+            positionRight = int(TelaInicial.winfo_screenwidth()/2 - windowWidth/2)
+            positionDown = 0
+            TelaInicial.geometry(constants.viewSize + "+{}+{}".format(positionRight-300, positionDown))
+            TelaInicial.resizable(0,0)
     TelaInicial.title(constants.titleTelaInicial)
     TelaInicial.configure(
         background=constants.backgroundColor
@@ -219,7 +228,6 @@ def TelaInicial(TelaInicial):
         anchor=SW
     )
     # ------------------------------------------------------
-
     TelaInicial.mainloop()
 
 if __name__ == '__main__':
