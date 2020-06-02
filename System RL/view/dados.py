@@ -31,7 +31,7 @@ def view(TelaInicial, dict_config):
 
     def remover_ensaio():
         line = tree2.index(tree2.focus())
-        if line == ():
+        if str(tree2.focus()) == "":
             popup("Selecione um ensaio!")
         else:
             query.deletarEnsaio(dict_config["experimento_id"], ensaios[line][5], ensaios[line][7], ensaios[line][8], ensaios[line][9])
@@ -69,7 +69,7 @@ def view(TelaInicial, dict_config):
 
     def results():
         line = tree2.index(tree2.focus())
-        if line == ():
+        if str(tree2.focus()) == "":
             popup("Selecione um ensaio!")
         else:
             golsFeitos, golsSofridos, saldoGols, episodios = query.getFullEnsaio(ensaios[line][5])
@@ -125,22 +125,39 @@ def view(TelaInicial, dict_config):
             medias_gols_sofridos.append(x[2])
             medias_saldo_de_gols.append(x[3])
 
-        bar_width = 0.1
+        bar_width = 0.25
         y_pos = np.arange(len(combinacoes))
 
         fig, ax1 = plt.subplots(1)
         fig.tight_layout()
 
-        ax1.bar(y_pos, medias_gols_feitos, bar_width, label=constants.labelGRAPH_AR, color='g', align='center', alpha=0.5, edgecolor='none')
-        ax1.bar(y_pos+bar_width, medias_gols_sofridos, bar_width, label=constants.labelGRAPH_Res, color='b', align='center', alpha=0.5, edgecolor='none')
-        ax1.bar(y_pos+bar_width+bar_width, medias_saldo_de_gols, bar_width, label=constants.labelGRAPH_Saldo, color='r', align='center', alpha=0.5, edgecolor='none')
-        ax1.set_xticks(y_pos + bar_width)
+        gp1 = ax1.bar(y_pos-bar_width, medias_gols_feitos, bar_width, label=constants.labelGRAPH_AR, color='g', align='center', alpha=0.5, edgecolor='none')
+        gp2 = ax1.bar(y_pos, medias_gols_sofridos, bar_width, label=constants.labelGRAPH_Res, color='r', align='center', alpha=0.5, edgecolor='none')
+        gp3 = ax1.bar(y_pos+bar_width, medias_saldo_de_gols, bar_width, label=constants.labelGRAPH_Saldo, color='b', align='center', alpha=0.5, edgecolor='none')
+
+        def autolabel(gps):
+            """Attach a text label above each bar in *gp*, displaying its height."""
+            for gp in gps:
+                height = gp.get_height()
+                ax1.annotate('{}'.format(height).replace(".0", ""),
+                            xy=(gp.get_x() + gp.get_width() / 2, height),
+                            xytext=(0, 3),  # 3 points vertical offset
+                            textcoords="offset points",
+                            ha='center', va='bottom',
+                            fontsize=15)
+
+        autolabel(gp1)
+        autolabel(gp2)
+        autolabel(gp3)
+
+        ax1.set_xticks(y_pos)
         ax1.set_xticklabels(combinacoes)
         ax1.legend(
             loc='upper center', 
             bbox_to_anchor=(0.5, 1.06), 
             fancybox=True, 
             shadow=True, 
+            fontsize=15,
             ncol=3)
 
         plt.show()

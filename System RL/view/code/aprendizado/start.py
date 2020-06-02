@@ -12,6 +12,7 @@ from view.code import monitor
 from view.code import getPlacar as placar
 from view.code import monitor
 
+import constants.constants as constants
 import random
 
 def run(dicTeam):
@@ -27,7 +28,7 @@ def run(dicTeam):
 	def monitor():
 		monitor.run(dicTeam["monitor"])     
 
-	input_ = "cd && rm -r /home/ufrbots/.log && mkdir /home/ufrbots/.log"
+	input_ = constants.resetLogDir
 	var = subprocess.getoutput(input_)
 	
 	t1 = threading.Thread(target=partida_)

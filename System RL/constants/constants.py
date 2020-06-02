@@ -141,6 +141,7 @@ addressFileMatriz		= "/home/" + user_name + "/Documents/AR_System/q.txt"
 
 addressFileDesktop		= "/home/" + user_name + "/.System\ RL/System RL.desktop"
 moveFileDesktop			= "cd && cp -r /home/" + user_name + "/.System RL/System\ RL.desktop /usr/share/applications/"
+resetLogDir				= "cd && rm -r /home/" + user_name + "/.log && mkdir /home/" + user_name + "/.log"
 moveFileDesktop2		= "cd && cp -r /usr/share/applications/System RL.desktop /home/" + user_name + "/Desktop/"
 commandExec				= "python3 /home/" + user_name + "/.System\ RL/TelaInicial.py"
 commandIcon				= "/home/" + user_name + "/.System\ RL/img/logo.png"
@@ -207,7 +208,8 @@ fontPersonalizadaDesc	= "Ubuntu"
 fontSizeDesc			= 12
 
 
-commandCriarPastaLog	= "cd && rm -r /home/" + user_name + "/.log && mkdir /home/" + user_name + "/.log"
+commandCriarPastaLog	= "cd && mkdir /home/" + user_name + "/.log"
+# commandCriarPastaLog	= "cd && rm -r /home/" + user_name + "/.log && mkdir /home/" + user_name + "/.log"
 
 # --------------------------------------------------------------
 # Dimensions

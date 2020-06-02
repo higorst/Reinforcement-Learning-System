@@ -10,8 +10,8 @@ import constants.constants as constants
 
 def run(dict_config, op):
 
-	num_states = 30
-	num_actions = 5
+	num_states = 32
+	num_actions = 6
 
 	def sucess():
 		msg = constants.msgSucess
@@ -65,13 +65,7 @@ def run(dict_config, op):
 		# -----------
 		# ./configure
 		# -----------
-		input_ = "cd && cd " + constants.addressDirAR + " && ./configure"
-		var = subprocess.getoutput(input_)
-
-		# -----------
-		# make
-		# -----------
-		input_ = "cd && cd " + constants.addressDirAR + " && make"
+		input_ = "cd && cd " + constants.addressDirAR + " && ./configure && make"
 		var = subprocess.getoutput(input_)
 		print(var)
 

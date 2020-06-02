@@ -23,7 +23,7 @@ def view(TelaInicial):
 
     def dados():
         line = listbox.index(listbox.focus())
-        if line == ():
+        if str(listbox.focus()) == "":
             popup("Selecione um experimento!")
         else:
             router(23, line)
@@ -68,7 +68,7 @@ def view(TelaInicial):
         global experimentos_id
         global experimentos_titulo
         line = listbox.index(listbox.focus())
-        if line == ():
+        if str(listbox.focus()) == "":
             popup("Selecione um experimento!")
         else:
             query.deletarExperimento(experimentos_id[int(line)])
@@ -100,7 +100,7 @@ def view(TelaInicial):
 
     def next():
         line = listbox.index(listbox.focus())
-        if line == ():
+        if str(listbox.focus()) == "":
             popup("Selecione um experimento para prosseguir ..")
         else:
             router(21, line)

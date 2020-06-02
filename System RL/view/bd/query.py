@@ -66,7 +66,7 @@ def cadastrarEnsaio(idExperimento, alpha, gamma, epsilon, golsFeitos, golsSofrid
     d.execute(
         "select id, count_ensaio "
         "from combinacao c "
-        "where  alpha = '" + alpha + "' and gamma = '" + gamma + "' and epsilon = '" + epsilon + "';")
+        "where  idExperimento = '" + idExperimento + "' alpha = '" + alpha + "' and gamma = '" + gamma + "' and epsilon = '" + epsilon + "';")
     # teste = ''
     for x in d.fetchall():
         # teste = x[0]
